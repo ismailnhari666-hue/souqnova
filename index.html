@@ -140,11 +140,12 @@ const cart=new Map();
 let products=[];
 let pending=null;
 
-const $=id=>document.getElementById(id),money=n=>Number(n).toFixed(2).replace(/\.00$/,"")+" DH";
-const money=n=>
-Number(n).toFixed(2).replace(/\.00$/,"")+" DH";
+const $=id=>document.getElementById(id);
+const money=n=>Number(n).toFixed(2).replace(/\.00$/,"")+" DH";
 
-function imgUrl(v){let m=String(v||"").match(/https?:\/\/[^)\s]+/);return m?m[0]:""}
+function imgUrl(v){
+let m=String(v||"").match(/https?:\/\/[^)\s]+/);
+return m?m[0]:"";
 }
 
 async function load(){
@@ -342,7 +343,6 @@ $("ok").style.display="block";
 $("ok").textContent=t;
 $("err").style.display="none";
 }
-$("form").onsubmit=async e=>{
 $("form").onsubmit=async e=>{
 e.preventDefault();
 
