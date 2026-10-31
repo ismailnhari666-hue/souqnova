@@ -70,24 +70,70 @@ footer{background:#171b31;color:#d8d9e5;padding:28px 20px;text-align:center}foot
  </div>
 </div>
 <script>
-const products=[
- {id:1,name:"Écouteurs sans fil",cat:"Électronique",price:149,old:199,emoji:"🎧"},
- {id:2,name:"Montre connectée",cat:"Électronique",price:229,old:299,emoji:"⌚"},
- {id:3,name:"Sac tendance",cat:"Mode",price:179,old:229,emoji:"👜"},
- {id:4,name:"Sneakers urbaines",cat:"Mode",price:249,old:329,emoji:"👟"},
- {id:5,name:"Soin visage",cat:"Beauté",price:119,old:159,emoji:"🧴"},
- {id:6,name:"Lampe décorative",cat:"Maison",price:139,old:189,emoji:"💡"},
- {id:7,name:"Gourde sport",cat:"Sport",price:89,old:119,emoji:"🥤"},
- {id:8,name:"Lunettes tendance",cat:"Accessoires",price:99,old:139,emoji:"🕶️"}
-];
+const API_URL="https://souqnova-api.ismailnhari666.workers.dev/api/products";
+const products=[];
 let category="Tout",cart=[];
+
 function setCategory(c){category=c;render()}
+
+function imageUrl(value){
+ if(!value)return "";
+ const match=value.match(/\]\((https?:\/\/[^)]+)\)/);
+ return match?match[1]:value;
+}
+
+async function loadProducts(){
+ const box=document.getElementById('products');
+ box.innerHTML="<p>Chargement des produits...</p>";
+ try{
+  const response=await fetch(API_URL);
+  if(!response.ok)throw new Error("Erreur serveur");
+  const data=await response.json();
+  if(!data.success||!Array.isArray(data.products))throw new Error("Données invalides");
+
+  products.splice(0,products.length,...data.products
+   .filter(p=>p.is_active&&p.stock_status==="in_stock"&&p.stock_quantity>0)
+   .map(p=>({
+    id:p.sku,
+    sku:p.sku,
+    name:p.name,
+    cat:p.category||"Tout",
+    price:Math.max(Number(p.suggested_retail_price)||0,Number(p.minimum_selling_price)||0),
+    cost:Number(p.fulfillment_price)||0,
+    image:imageUrl(p.main_image),
+    stock:Number(p.stock_quantity)||0,
+    emoji:"🛍️"
+   }))
+  );
+  render();
+ }catch(error){
+  box.innerHTML="<p>Impossible de charger les produits. Réessayez plus tard.</p>";
+ }
+}
+
 function render(){
  const q=document.getElementById('search').value.toLowerCase();
- const list=products.filter(p=>(category==="Tout"||p.cat===category)&&(p.name.toLowerCase().includes(q)||p.cat.toLowerCase().includes(q)));
+ const list=products.filter(p=>
+  (category==="Tout"||p.cat===category)&&
+  p.name.toLowerCase().includes(q)
+ );
  document.getElementById('resultCount').textContent=list.length+" produit(s)";
- document.getElementById('products').innerHTML=list.map(p=>`<article class="product"><div class="photo">${p.emoji}</div><div class="info"><div class="category">${p.cat}</div><h3>${p.name}</h3><div><span class="price">${p.price} DH</span><span class="old">${p.old} DH</span></div><button class="primary" onclick="add(${p.id})">Ajouter au panier</button></div></article>`).join('')||'<p>Aucun produit trouvé.</p>';
+ document.getElementById('products').innerHTML=list.map(p=>`
+ <article class="product">
+  <div class="photo">
+   ${p.image?`<img src="${p.image}" alt="" style="width:100%;height:100%;object-fit:contain" onerror="this.style.display='none'">`:p.emoji}
+  </div>
+  <div class="info">
+   <div class="category">Disponible</div>
+   <h3>${p.name}</h3>
+   <div><span class="price">${p.price} DH</span></div>
+   <small>En stock : ${p.stock}</small>
+   <button class="primary" onclick="add('${p.id}')">Ajouter au panier</button>
+  </div>
+ </article>`).join('')||'<p>Aucun produit trouvé.</p>';
 }
+
+loadProducts();
 function add(id){let item=cart.find(x=>x.id===id);if(item)item.qty++;else cart.push({id,qty:1});updateCart()}
 function updateCart(){
  document.getElementById('count').textContent=cart.reduce((s,x)=>s+x.qty,0);
