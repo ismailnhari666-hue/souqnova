@@ -1,6 +1,5 @@
 const MOWARID_API = "https://mowarid.ma/api/v1";
-const ALLOWED_ORIGIN = "https://issmail-ops.github.io";
-
+const ALLOWED_ORIGIN = "https://ismailnhari666-hue.github.io";
 export default {
   async fetch(request, env) {
     const origin = request.headers.get("Origin");
