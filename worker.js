@@ -24,14 +24,28 @@ export default {
     const path = url.pathname;
 
     try {
+
+      // Test secret without revealing its value
+      if (path === "/api/check-secret" && request.method === "GET") {
+        return new Response(
+          JSON.stringify({
+            keyFound: Boolean(env.MOWARID_API_KEY)
+          }),
+          { headers }
+        );
+      }
+
+      // Public cities list
       if (path === "/api/cities" && request.method === "GET") {
         const response = await fetch(`${MOWARID_API}/cities`);
+
         return new Response(await response.text(), {
           status: response.status,
           headers
         });
       }
 
+      // Check API key
       if (!env.MOWARID_API_KEY) {
         return new Response(
           JSON.stringify({ error: "API key not configured" }),
@@ -44,8 +58,10 @@ export default {
         "Accept": "application/json"
       };
 
+      // Get products
       if (path === "/api/products" && request.method === "GET") {
         const query = url.searchParams.toString();
+
         const response = await fetch(
           `${MOWARID_API}/products${query ? "?" + query : ""}`,
           { headers: authHeaders }
@@ -57,8 +73,10 @@ export default {
         });
       }
 
+      // Calculate order quote
       if (path === "/api/quote" && request.method === "POST") {
         const body = await request.text();
+
         const response = await fetch(`${MOWARID_API}/orders/quote`, {
           method: "POST",
           headers: {
@@ -78,7 +96,8 @@ export default {
         JSON.stringify({ error: "Route not found" }),
         { status: 404, headers }
       );
-    } catch {
+
+    } catch (error) {
       return new Response(
         JSON.stringify({ error: "Server error" }),
         { status: 502, headers }
