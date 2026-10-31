@@ -85,6 +85,52 @@ function imageUrl(value){
 async function loadProducts(){
  const box=document.getElementById('products');
  box.innerHTML="<p>Chargement des produits...</p>";
+
+ try{
+  let cursor="";
+  let allProducts=[];
+  let hasMore=true;
+  let pages=0;
+
+  while(hasMore && pages<100){
+   const url=API_URL+(cursor?"?cursor="+encodeURIComponent(cursor):"");
+   const response=await fetch(url);
+   if(!response.ok)throw new Error("Erreur serveur");
+
+   const data=await response.json();
+   if(!data.success||!Array.isArray(data.products))throw new Error("Données invalides");
+
+   allProducts.push(...data.products);
+
+   hasMore=Boolean(data.pagination?.has_more);
+   cursor=data.pagination?.next_cursor||"";
+   pages++;
+
+   if(hasMore&&!cursor)throw new Error("Curseur manquant");
+  }
+
+  products.splice(0,products.length,...allProducts
+   .filter(p=>p.is_active&&p.stock_status==="in_stock"&&p.stock_quantity>0)
+   .map(p=>({
+    id:p.sku,
+    sku:p.sku,
+    name:p.name,
+    cat:p.category||"Tout",
+    price:Math.max(Number(p.suggested_retail_price)||0,Number(p.minimum_selling_price)||0),
+    cost:Number(p.fulfillment_price)||0,
+    image:imageUrl(p.main_image),
+    stock:Number(p.stock_quantity)||0,
+    emoji:"🛍️"
+   }))
+  );
+
+  render();
+ }catch(error){
+  box.innerHTML="<p>Impossible de charger les produits. Réessayez plus tard.</p>";
+ }
+}
+ const box=document.getElementById('products');
+ box.innerHTML="<p>Chargement des produits...</p>";
  try{
   const response=await fetch(API_URL);
   if(!response.ok)throw new Error("Erreur serveur");
