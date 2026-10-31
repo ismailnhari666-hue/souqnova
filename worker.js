@@ -1,14 +1,26 @@
 const MOWARID_API = "https://mowarid.ma/api/v1";
 const ALLOWED_ORIGIN = "https://ismailnhari666-hue.github.io";
+
+const json = (data, status = 200, cors = {}) =>
+  new Response(JSON.stringify(data), {
+    status,
+    headers: {
+      ...cors,
+      "Content-Type": "application/json; charset=utf-8"
+    }
+  });
+
+const validPhone = p => /^(05|06|07)\d{8}$/.test(String(p || ""));
+
 export default {
   async fetch(request, env) {
     const origin = request.headers.get("Origin");
 
-    const headers = {
+    const cors = {
       "Access-Control-Allow-Origin": ALLOWED_ORIGIN,
       "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
       "Access-Control-Allow-Headers": "Content-Type",
-      "Content-Type": "application/json"
+      "Vary": "Origin"
     };
 
     if (origin && origin !== ALLOWED_ORIGIN) {
@@ -16,91 +28,143 @@ export default {
     }
 
     if (request.method === "OPTIONS") {
-      return new Response(null, { headers });
+      return new Response(null, { headers: cors });
     }
 
     const url = new URL(request.url);
     const path = url.pathname;
 
     try {
-
-      // Test secret without revealing its value
       if (path === "/api/check-secret" && request.method === "GET") {
-        return new Response(
-          JSON.stringify({
-            keyFound: Boolean(env.MOWARID_API_KEY)
-          }),
-          { headers }
-        );
+        return json({ keyFound: Boolean(env.MOWARID_API_KEY) }, 200, cors);
       }
 
-      // Public cities list
       if (path === "/api/cities" && request.method === "GET") {
-        const response = await fetch(`${MOWARID_API}/cities`);
-
-        return new Response(await response.text(), {
-          status: response.status,
-          headers
+        const r = await fetch(`${MOWARID_API}/cities`);
+        return new Response(await r.text(), {
+          status: r.status,
+          headers: { ...cors, "Content-Type": "application/json" }
         });
       }
 
-      // Check API key
       if (!env.MOWARID_API_KEY) {
-        return new Response(
-          JSON.stringify({ error: "API key not configured" }),
-          { status: 500, headers }
-        );
+        return json({ success: false, error: "API key not configured" }, 500, cors);
       }
 
-      const authHeaders = {
-        "Authorization": `Bearer ${env.MOWARID_API_KEY}`,
-        "Accept": "application/json"
+      const auth = {
+        Authorization: `Bearer ${env.MOWARID_API_KEY}`,
+        Accept: "application/json"
       };
 
-      // Get products
       if (path === "/api/products" && request.method === "GET") {
-        const query = url.searchParams.toString();
+        const r = await fetch(`${MOWARID_API}/products${url.search}`, {
+          headers: auth
+        });
 
-        const response = await fetch(
-          `${MOWARID_API}/products${query ? "?" + query : ""}`,
-          { headers: authHeaders }
-        );
-
-        return new Response(await response.text(), {
-          status: response.status,
-          headers
+        return new Response(await r.text(), {
+          status: r.status,
+          headers: { ...cors, "Content-Type": "application/json" }
         });
       }
 
-      // Calculate order quote
       if (path === "/api/quote" && request.method === "POST") {
         const body = await request.text();
 
-        const response = await fetch(`${MOWARID_API}/orders/quote`, {
+        const r = await fetch(`${MOWARID_API}/orders/quote`, {
           method: "POST",
           headers: {
-            ...authHeaders,
+            ...auth,
             "Content-Type": "application/json"
           },
           body
         });
 
-        return new Response(await response.text(), {
-          status: response.status,
-          headers
+        return new Response(await r.text(), {
+          status: r.status,
+          headers: { ...cors, "Content-Type": "application/json" }
         });
       }
 
-      return new Response(
-        JSON.stringify({ error: "Route not found" }),
-        { status: 404, headers }
-      );
+      if (path === "/api/orders" && request.method === "POST") {
+        let b;
+
+        try {
+          b = await request.json();
+        } catch {
+          return json({ success: false, error: "Invalid JSON" }, 400, cors);
+        }
+
+        const items = Array.isArray(b.items)
+          ? b.items
+          : [{
+              product_code: b.product_code,
+              quantity: b.quantity,
+              retail_price: b.retail_price
+            }];
+
+        if (!b.external_order_id || String(b.external_order_id).length > 100) {
+          return json({ success: false, error: "external_order_id required" }, 400, cors);
+        }
+
+        if (
+          !b.customer_name ||
+          !validPhone(b.customer_phone) ||
+          !b.city ||
+          !b.address
+        ) {
+          return json({ success: false, error: "Invalid customer details or Moroccan phone" }, 400, cors);
+        }
+
+        if (
+          !items.length ||
+          items.length > 50 ||
+          items.some(i =>
+            !i.product_code ||
+            !Number.isInteger(Number(i.quantity)) ||
+            Number(i.quantity) < 1 ||
+            !Number.isFinite(Number(i.retail_price)) ||
+            Number(i.retail_price) <= 0
+          )
+        ) {
+          return json({ success: false, error: "Invalid items" }, 400, cors);
+        }
+
+        const payload = {
+          external_order_id: String(b.external_order_id),
+          store_name: "SouqNova",
+          store_url: "https://ismailnhari666-hue.github.io/souqnova/",
+          customer_name: String(b.customer_name).trim(),
+          customer_phone: String(b.customer_phone),
+          city: String(b.city).trim(),
+          address: String(b.address).trim(),
+          customer_shipping_fee: Number(b.customer_shipping_fee || 0),
+          notes: String(b.notes || "").slice(0, 500),
+          items: items.map(i => ({
+            product_code: String(i.product_code),
+            quantity: Number(i.quantity),
+            retail_price: Number(i.retail_price)
+          }))
+        };
+
+        const r = await fetch(`${MOWARID_API}/orders`, {
+          method: "POST",
+          headers: {
+            ...auth,
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify(payload)
+        });
+
+        return new Response(await r.text(), {
+          status: r.status,
+          headers: { ...cors, "Content-Type": "application/json" }
+        });
+      }
+
+      return json({ error: "Route not found" }, 404, cors);
 
     } catch (error) {
-      return new Response(
-        JSON.stringify({ error: "Server error" }),
-        { status: 502, headers }
-      );
+      return json({ success: false, error: "Server error" }, 502, cors);
     }
   }
 };
