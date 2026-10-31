@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SouqNova — La boutique de tout</title>
+<style>
+:root{--ink:#172033;--muted:#687386;--brand:#5b4bdb;--accent:#ffb84d;--bg:#f6f7fb;--card:#fff}
+*{box-sizing:border-box}body{margin:0;font-family:Arial,sans-serif;background:var(--bg);color:var(--ink)}
+header{background:#fff;position:sticky;top:0;z-index:5;box-shadow:0 2px 14px #17203312}
+.top{max-width:1180px;margin:auto;padding:16px 20px;display:flex;align-items:center;gap:18px}
+.logo{font-size:25px;font-weight:900;color:var(--brand);white-space:nowrap}.logo span{color:#ff9f2e}
+.search{flex:1;display:flex;background:#f1f2f8;border-radius:13px;padding:5px}.search input{border:0;background:transparent;padding:10px;outline:0;width:100%;font-size:15px}
+button{border:0;cursor:pointer;font-weight:700;border-radius:11px;padding:11px 15px}.primary{background:var(--brand);color:#fff}.cartbtn{background:#eeeaff;color:var(--brand)}
+nav{max-width:1180px;margin:auto;padding:0 20px 13px;display:flex;gap:9px;overflow:auto}nav button{background:#f2f1ff;color:#5144bf;white-space:nowrap}
+.hero{max-width:1180px;margin:25px auto;padding:42px 35px;border-radius:24px;background:linear-gradient(120deg,#211b58,#6253dc);color:white;display:flex;align-items:center;justify-content:space-between;gap:20px}
+.hero h1{font-size:clamp(30px,5vw,48px);margin:0 0 12px}.hero p{color:#e3e0ff;max-width:540px;line-height:1.6}.hero .tag{display:inline-block;background:#ffffff20;padding:8px 12px;border-radius:30px;margin-bottom:15px}.hero .orb{font-size:100px}
+main{max-width:1180px;margin:auto;padding:0 20px 50px}.sectionhead{display:flex;justify-content:space-between;align-items:center;margin:28px 0 16px}.sectionhead h2{margin:0}
+.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:17px}.product{background:var(--card);border-radius:17px;overflow:hidden;box-shadow:0 5px 20px #1d25400b}.photo{height:170px;display:grid;place-items:center;font-size:66px;background:linear-gradient(140deg,#eeedff,#fff4e4)}.info{padding:14px}.category{font-size:12px;color:var(--muted)}.info h3{font-size:16px;margin:7px 0}.price{font-size:18px;font-weight:900;color:var(--brand)}.old{font-size:12px;color:#9aa1af;text-decoration:line-through;margin-left:7px}.info button{width:100%;margin-top:11px}
+.benefits{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin:26px 0}.benefit{background:#fff;padding:18px;border-radius:15px}.benefit b{display:block;margin:8px 0}.benefit small{color:var(--muted);line-height:1.5}
+footer{background:#171b31;color:#d8d9e5;padding:28px 20px;text-align:center}footer b{color:white}
+.overlay{display:none;position:fixed;inset:0;background:#10142680;z-index:10;justify-content:flex-end}.panel{background:#fff;width:min(440px,100%);height:100%;padding:22px;overflow:auto}.panelhead{display:flex;justify-content:space-between;align-items:center}.close{background:#f0f0f5}.cartline{display:flex;justify-content:space-between;gap:12px;padding:14px 0;border-bottom:1px solid #eee}.cartline small{display:block;color:var(--muted);margin-top:5px}.total{font-size:20px;font-weight:900;margin:20px 0}.form input,.form textarea{width:100%;padding:13px;margin:7px 0;border:1px solid #dfe2eb;border-radius:10px;font:inherit}.form label{font-size:13px;font-weight:700}.form button{width:100%;margin-top:10px}
+.note{font-size:12px;color:var(--muted);line-height:1.5}
+@media(max-width:850px){.grid{grid-template-columns:repeat(2,1fr)}.hero{margin:16px 12px;padding:28px 22px}.hero .orb{font-size:65px}.benefits{grid-template-columns:1fr}.top{gap:9px}.logo{font-size:21px}}
+@media(max-width:430px){.search{order:3;flex-basis:100%}.top{flex-wrap:wrap}.cartbtn{margin-left:auto}.photo{height:135px}.info{padding:11px}}
+</style>
+</head>
+<body>
+<header>
+ <div class="top">
+  <div class="logo">Souq<span>Nova</span></div>
+  <div class="search"><input id="search" placeholder="Rechercher un produit..." oninput="render()"></div>
+  <button class="cartbtn" onclick="openCart()">🛒 Panier (<span id="count">0</span>)</button>
+ </div>
+ <nav>
+  <button onclick="setCategory('Tout')">Tout</button><button onclick="setCategory('Électronique')">📱 Électronique</button>
+  <button onclick="setCategory('Mode')">👟 Mode</button><button onclick="setCategory('Beauté')">✨ Beauté</button>
+  <button onclick="setCategory('Maison')">🏠 Maison</button><button onclick="setCategory('Sport')">🏋️ Sport</button>
+  <button onclick="setCategory('Accessoires')">🎒 Accessoires</button>
+ </nav>
+</header>
+<section class="hero">
+ <div><span class="tag">✨ Bienvenue chez SouqNova</span><h1>Tout ce que vous aimez,<br>au même endroit.</h1>
+ <p>Découvrez des idées utiles, des nouveautés et des offres sélectionnées. Commandez facilement et payez à la livraison.</p>
+ <button style="background:var(--accent);color:#35234b" onclick="document.getElementById('catalogue').scrollIntoView({behavior:'smooth'})">Découvrir la boutique</button></div>
+ <div class="orb">🛍️</div>
+</section>
+<main id="catalogue">
+ <div class="benefits">
+  <div class="benefit">🚚<b>Livraison partout au Maroc</b><small>Modalités et délais confirmés avant expédition.</small></div>
+  <div class="benefit">💵<b>Paiement à la livraison</b><small>Payez lorsque votre commande arrive, selon disponibilité du transporteur.</small></div>
+  <div class="benefit">💬<b>Service client</b><small>Une question ? Contactez notre équipe avant de commander.</small></div>
+ </div>
+ <div class="sectionhead"><h2>Nos produits</h2><span id="resultCount" class="category"></span></div>
+ <div class="grid" id="products"></div>
+</main>
+<footer><b>SouqNova</b><p>La boutique en ligne qui rassemble vos envies.</p><small>© 2026 SouqNova — Démonstration de boutique à personnaliser.</small></footer>
+
+<div class="overlay" id="overlay" onclick="if(event.target===this)closeCart()">
+ <div class="panel">
+  <div class="panelhead"><h2>Votre panier</h2><button class="close" onclick="closeCart()">✕</button></div>
+  <div id="cartItems"></div><div class="total" id="total">Total : 0 DH</div>
+  <h3>Informations de livraison</h3>
+  <div class="form">
+   <label>Nom complet</label><input id="customer" placeholder="Votre nom">
+   <label>Téléphone</label><input id="phone" type="tel" placeholder="06XXXXXXXX">
+   <label>Ville et adresse</label><textarea id="address" rows="3" placeholder="Ville, quartier, adresse complète"></textarea>
+   <button class="primary" onclick="sendOrder()">Confirmer la demande de commande</button>
+   <p class="note">Prototype : le bouton prépare une demande WhatsApp. Ajoutez votre numéro WhatsApp dans le code avant publication. Aucune commande ni aucun paiement n'est transmis automatiquement dans cette version.</p>
+  </div>
+ </div>
+</div>
+<script>
+const products=[
+ {id:1,name:"Écouteurs sans fil",cat:"Électronique",price:149,old:199,emoji:"🎧"},
+ {id:2,name:"Montre connectée",cat:"Électronique",price:229,old:299,emoji:"⌚"},
+ {id:3,name:"Sac tendance",cat:"Mode",price:179,old:229,emoji:"👜"},
+ {id:4,name:"Sneakers urbaines",cat:"Mode",price:249,old:329,emoji:"👟"},
+ {id:5,name:"Soin visage",cat:"Beauté",price:119,old:159,emoji:"🧴"},
+ {id:6,name:"Lampe décorative",cat:"Maison",price:139,old:189,emoji:"💡"},
+ {id:7,name:"Gourde sport",cat:"Sport",price:89,old:119,emoji:"🥤"},
+ {id:8,name:"Lunettes tendance",cat:"Accessoires",price:99,old:139,emoji:"🕶️"}
+];
+let category="Tout",cart=[];
+function setCategory(c){category=c;render()}
+function render(){
+ const q=document.getElementById('search').value.toLowerCase();
+ const list=products.filter(p=>(category==="Tout"||p.cat===category)&&(p.name.toLowerCase().includes(q)||p.cat.toLowerCase().includes(q)));
+ document.getElementById('resultCount').textContent=list.length+" produit(s)";
+ document.getElementById('products').innerHTML=list.map(p=>`<article class="product"><div class="photo">${p.emoji}</div><div class="info"><div class="category">${p.cat}</div><h3>${p.name}</h3><div><span class="price">${p.price} DH</span><span class="old">${p.old} DH</span></div><button class="primary" onclick="add(${p.id})">Ajouter au panier</button></div></article>`).join('')||'<p>Aucun produit trouvé.</p>';
+}
+function add(id){let item=cart.find(x=>x.id===id);if(item)item.qty++;else cart.push({id,qty:1});updateCart()}
+function updateCart(){
+ document.getElementById('count').textContent=cart.reduce((s,x)=>s+x.qty,0);
+ document.getElementById('cartItems').innerHTML=cart.length?cart.map(x=>{let p=products.find(y=>y.id===x.id);return `<div class="cartline"><div>${p.emoji} <b>${p.name}</b><small>${p.price} DH × ${x.qty}</small></div><div><b>${p.price*x.qty} DH</b><br><button class="close" onclick="changeQty(${x.id},-1)">−</button> <button class="close" onclick="changeQty(${x.id},1)">+</button></div></div>`}).join(''):'<p>Votre panier est vide.</p>';
+ let sum=cart.reduce((s,x)=>s+products.find(p=>p.id===x.id).price*x.qty,0);document.getElementById('total').textContent="Total : "+sum+" DH";
+}
+function changeQty(id,n){let x=cart.find(y=>y.id===id);if(x){x.qty+=n;if(x.qty<=0)cart=cart.filter(y=>y.id!==id)}updateCart()}
+function openCart(){updateCart();document.getElementById('overlay').style.display='flex'}
+function closeCart(){document.getElementById('overlay').style.display='none'}
+function sendOrder(){
+ const name=document.getElementById('customer').value.trim(),phone=document.getElementById('phone').value.trim(),address=document.getElementById('address').value.trim();
+ if(!cart.length)return alert("Votre panier est vide.");if(!name||!phone||!address)return alert("Veuillez remplir vos coordonnées.");
+ const lines=cart.map(x=>{let p=products.find(y=>y.id===x.id);return `${p.name} x${x.qty} — ${p.price*x.qty} DH`}).join("\n");
+ const total=cart.reduce((s,x)=>s+products.find(p=>p.id===x.id).price*x.qty,0);
+ const msg=`Bonjour, je souhaite commander :\n${lines}\nTotal : ${total} DH\nNom : ${name}\nTéléphone : ${phone}\nAdresse : ${address}`;
+ const WHATSAPP_NUMBER="212619442418"; // Numéro WhatsApp pour recevoir les demandes de commande
+ if(WHATSAPP_NUMBER==="212600000000")return alert("Démo : remplacez le numéro WhatsApp 212600000000 dans le code par votre numéro, puis réessayez.\n\n"+msg);
+ window.open("https://wa.me/"+WHATSAPP_NUMBER+"?text="+encodeURIComponent(msg),"_blank");
+}
+render();updateCart();
+</script>
+</body></html>
