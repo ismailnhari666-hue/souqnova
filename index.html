@@ -1,189 +1,474 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="fr">
 <head>
-<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
-<title>SouqNova — La boutique de tout</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>SouqNova</title>
 <style>
-:root{--ink:#172033;--muted:#687386;--brand:#5b4bdb;--accent:#ffb84d;--bg:#f6f7fb;--card:#fff}
-*{box-sizing:border-box}body{margin:0;font-family:Arial,sans-serif;background:var(--bg);color:var(--ink)}
-header{background:#fff;position:sticky;top:0;z-index:5;box-shadow:0 2px 14px #17203312}
-.top{max-width:1180px;margin:auto;padding:16px 20px;display:flex;align-items:center;gap:18px}
-.logo{font-size:25px;font-weight:900;color:var(--brand);white-space:nowrap}.logo span{color:#ff9f2e}
-.search{flex:1;display:flex;background:#f1f2f8;border-radius:13px;padding:5px}.search input{border:0;background:transparent;padding:10px;outline:0;width:100%;font-size:15px}
-button{border:0;cursor:pointer;font-weight:700;border-radius:11px;padding:11px 15px}.primary{background:var(--brand);color:#fff}.cartbtn{background:#eeeaff;color:var(--brand)}
-nav{max-width:1180px;margin:auto;padding:0 20px 13px;display:flex;gap:9px;overflow:auto}nav button{background:#f2f1ff;color:#5144bf;white-space:nowrap}
-.hero{max-width:1180px;margin:25px auto;padding:42px 35px;border-radius:24px;background:linear-gradient(120deg,#211b58,#6253dc);color:white;display:flex;align-items:center;justify-content:space-between;gap:20px}
-.hero h1{font-size:clamp(30px,5vw,48px);margin:0 0 12px}.hero p{color:#e3e0ff;max-width:540px;line-height:1.6}.hero .tag{display:inline-block;background:#ffffff20;padding:8px 12px;border-radius:30px;margin-bottom:15px}.hero .orb{font-size:100px}
-main{max-width:1180px;margin:auto;padding:0 20px 50px}.sectionhead{display:flex;justify-content:space-between;align-items:center;margin:28px 0 16px}.sectionhead h2{margin:0}
-.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:17px}.product{background:var(--card);border-radius:17px;overflow:hidden;box-shadow:0 5px 20px #1d25400b}.photo{height:170px;display:grid;place-items:center;font-size:66px;background:linear-gradient(140deg,#eeedff,#fff4e4)}.info{padding:14px}.category{font-size:12px;color:var(--muted)}.info h3{font-size:16px;margin:7px 0}.price{font-size:18px;font-weight:900;color:var(--brand)}.old{font-size:12px;color:#9aa1af;text-decoration:line-through;margin-left:7px}.info button{width:100%;margin-top:11px}
-.benefits{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin:26px 0}.benefit{background:#fff;padding:18px;border-radius:15px}.benefit b{display:block;margin:8px 0}.benefit small{color:var(--muted);line-height:1.5}
-footer{background:#171b31;color:#d8d9e5;padding:28px 20px;text-align:center}footer b{color:white}
-.overlay{display:none;position:fixed;inset:0;background:#10142680;z-index:10;justify-content:flex-end}.panel{background:#fff;width:min(440px,100%);height:100%;padding:22px;overflow:auto}.panelhead{display:flex;justify-content:space-between;align-items:center}.close{background:#f0f0f5}.cartline{display:flex;justify-content:space-between;gap:12px;padding:14px 0;border-bottom:1px solid #eee}.cartline small{display:block;color:var(--muted);margin-top:5px}.total{font-size:20px;font-weight:900;margin:20px 0}.form input,.form textarea{width:100%;padding:13px;margin:7px 0;border:1px solid #dfe2eb;border-radius:10px;font:inherit}.form label{font-size:13px;font-weight:700}.form button{width:100%;margin-top:10px}
-.note{font-size:12px;color:var(--muted);line-height:1.5}
-@media(max-width:850px){.grid{grid-template-columns:repeat(2,1fr)}.hero{margin:16px 12px;padding:28px 22px}.hero .orb{font-size:65px}.benefits{grid-template-columns:1fr}.top{gap:9px}.logo{font-size:21px}}
-@media(max-width:430px){.search{order:3;flex-basis:100%}.top{flex-wrap:wrap}.cartbtn{margin-left:auto}.photo{height:135px}.info{padding:11px}}
+*{box-sizing:border-box}
+body{margin:0;background:#f5f7f3;color:#17231f;font-family:Arial}
+header{background:#123c31;color:white;padding:18px 5%;display:flex;justify-content:space-between;align-items:center;position:sticky;top:0}
+.logo{font-size:25px;font-weight:900}
+.logo span{color:#c8f169}
+button{border:0;border-radius:10px;padding:12px 16px;font-weight:bold;cursor:pointer}
+.cartbtn{background:#c8f169}
+.hero{background:#174635;color:white;padding:45px 5%}
+.hero h1{font-size:clamp(30px,5vw,52px);margin:0 0 10px}
+.hero p{line-height:1.6}
+main{max-width:1150px;margin:28px auto;padding:0 16px}
+.bar{display:flex;gap:10px;margin-bottom:18px}
+.bar input,.bar select,.field input,.field textarea{padding:13px;border:1px solid #dfe7df;border-radius:9px;font:inherit;background:white}
+.bar input{flex:1;min-width:0}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(215px,1fr));gap:16px}
+.card{background:white;border:1px solid #e5eae4;border-radius:15px;overflow:hidden}
+.photo{height:205px;background:#edf2ed;display:grid;place-items:center}
+.photo img{width:100%;height:100%;object-fit:contain}
+.info{padding:14px}
+.name{font-weight:bold;min-height:38px}
+.price{font-size:21px;font-weight:900;color:#123c31;margin:9px 0}
+.muted{font-size:12px;color:#718078}
+.add,.submit{background:#123c31;color:white;width:100%;margin-top:10px}
+.notice{padding:16px;background:white;border-radius:12px}
+.overlay{display:none;position:fixed;inset:0;background:#0008;z-index:5;align-items:flex-end;justify-content:center}
+.overlay.open{display:flex}
+.panel{background:white;width:min(650px,100%);max-height:94vh;overflow:auto;padding:20px;border-radius:18px 18px 0 0}
+.head,.line{display:flex;justify-content:space-between;gap:12px;align-items:center}
+.line{padding:10px 0;border-bottom:1px solid #eee}
+.field{display:grid;gap:5px;margin:11px 0}
+.field label{font-size:13px;font-weight:bold}
+.field textarea{min-height:65px}
+.error,.success{display:none;white-space:pre-wrap;padding:12px;border-radius:9px;margin:10px 0}
+.error{background:#fff0ee;color:#a21b13}
+.success{background:#eaf8ed;color:#14532d}
+.small{font-size:12px;color:#68766f;line-height:1.5}
+.close{background:#edf1ec}
+footer{text-align:center;padding:30px;color:#68766f}
+@media(min-width:700px){
+.overlay{align-items:center}
+.panel{border-radius:18px}
+}
 </style>
 </head>
+
 <body>
+
 <header>
- <div class="top">
-  <div class="logo">Souq<span>Nova</span></div>
-  <div class="search"><input id="search" placeholder="Rechercher un produit..." oninput="render()"></div>
-  <button class="cartbtn" onclick="openCart()">🛒 Panier (<span id="count">0</span>)</button>
- </div>
- <nav>
-  <button onclick="setCategory('Tout')">Tout</button><button onclick="setCategory('Électronique')">📱 Électronique</button>
-  <button onclick="setCategory('Mode')">👟 Mode</button><button onclick="setCategory('Beauté')">✨ Beauté</button>
-  <button onclick="setCategory('Maison')">🏠 Maison</button><button onclick="setCategory('Sport')">🏋️ Sport</button>
-  <button onclick="setCategory('Accessoires')">🎒 Accessoires</button>
- </nav>
+<div class="logo">Souq<span>Nova</span></div>
+<button class="cartbtn" id="open">Panier (<b id="count">0</b>)</button>
 </header>
+
 <section class="hero">
- <div><span class="tag">✨ Bienvenue chez SouqNova</span><h1>Tout ce que vous aimez,<br>au même endroit.</h1>
- <p>Découvrez des idées utiles, des nouveautés et des offres sélectionnées. Commandez facilement et payez à la livraison.</p>
- <button style="background:var(--accent);color:#35234b" onclick="document.getElementById('catalogue').scrollIntoView({behavior:'smooth'})">Découvrir la boutique</button></div>
- <div class="orb">🛍️</div>
+<h1>Découvrez vos prochains coups de cœur.</h1>
+<p>Une sélection de produits avec paiement à la livraison partout au Maroc.</p>
 </section>
-<main id="catalogue">
- <div class="benefits">
-  <div class="benefit">🚚<b>Livraison partout au Maroc</b><small>Modalités et délais confirmés avant expédition.</small></div>
-  <div class="benefit">💵<b>Paiement à la livraison</b><small>Payez lorsque votre commande arrive, selon disponibilité du transporteur.</small></div>
-  <div class="benefit">💬<b>Service client</b><small>Une question ? Contactez notre équipe avant de commander.</small></div>
- </div>
- <div class="sectionhead"><h2>Nos produits</h2><span id="resultCount" class="category"></span></div>
- <div class="grid" id="products"></div>
-</main>
-<footer><b>SouqNova</b><p>La boutique en ligne qui rassemble vos envies.</p><small>© 2026 SouqNova — Démonstration de boutique à personnaliser.</small></footer>
 
-<div class="overlay" id="overlay" onclick="if(event.target===this)closeCart()">
- <div class="panel">
-  <div class="panelhead"><h2>Votre panier</h2><button class="close" onclick="closeCart()">✕</button></div>
-  <div id="cartItems"></div><div class="total" id="total">Total : 0 DH</div>
-  <h3>Informations de livraison</h3>
-  <div class="form">
-   <label>Nom complet</label><input id="customer" placeholder="Votre nom">
-   <label>Téléphone</label><input id="phone" type="tel" placeholder="06XXXXXXXX">
-   <label>Ville et adresse</label><textarea id="address" rows="3" placeholder="Ville, quartier, adresse complète"></textarea>
-   <button class="primary" onclick="sendOrder()">Confirmer la demande de commande</button>
-   <p class="note">Prototype : le bouton prépare une demande WhatsApp. Ajoutez votre numéro WhatsApp dans le code avant publication. Aucune commande ni aucun paiement n'est transmis automatiquement dans cette version.</p>
-  </div>
- </div>
+<main>
+<div class="bar">
+<input id="search" placeholder="Rechercher un produit...">
+<select id="sort">
+<option value="">Tri par défaut</option>
+<option value="asc">Prix croissant</option>
+<option value="desc">Prix décroissant</option>
+</select>
 </div>
+
+<div id="status" class="notice">Chargement...</div>
+<div id="products" class="grid"></div>
+</main>
+
+<footer>SouqNova · Paiement à la livraison</footer>
+
+<div class="overlay" id="overlay">
+<section class="panel">
+
+<div class="head">
+<h2>Votre panier</h2>
+<button class="close" id="close">Fermer</button>
+</div>
+
+<div id="cart"></div>
+<h3 id="subtotal"></h3>
+
+<form id="form">
+
+<div class="field">
+<label>Nom complet</label>
+<input name="customer_name" required>
+</div>
+
+<div class="field">
+<label>Téléphone marocain</label>
+<input name="customer_phone" required inputmode="tel" maxlength="10" placeholder="0612345678">
+</div>
+
+<div class="field">
+<label>Ville</label>
+<input name="city" required list="cities" placeholder="Rabat">
+<datalist id="cities"></datalist>
+</div>
+
+<div class="field">
+<label>Adresse détaillée</label>
+<textarea name="address" required></textarea>
+</div>
+
+<div class="field">
+<label>ملاحظات (اختياري)</label>
+<textarea name="notes"></textarea>
+</div>
+
+<p class="small">
+الشحن: 20 DH للدار البيضاء و30 DH لباقي المدن، مرة واحدة للطلب.
+</p>
+
+<div id="err" class="error"></div>
+<div id="ok" class="success"></div>
+
+<button class="submit" id="send">تحقق من السعر</button>
+
+<p class="small">
+أول ضغطة تتحقق من السعر فقط. الضغطة الثانية ترسل الطلب فعلياً للمورد.
+</p>
+
+</form>
+</section>
+</div>
+
 <script>
-const API_URL="https://souqnova-api.ismailnhari666.workers.dev/api/products";
-const products=[];
-let category="Tout",cart=[];
+const API="https://souqnova-api.ismailnhari666.workers.dev";
+const cart=new Map();
+let products=[];
+let pending=null;
 
-function setCategory(c){category="Tout";render()}
+const $=id=>document.getElementById(id);
 
-function imageUrl(value){
- if(!value)return "";
- const match=value.match(/\]\((https?:\/\/[^)]+)\)/);
- return match?match[1]:value;
+const money=n=>
+Number(n).toFixed(2).replace(/\.00$/,"")+" DH";
+
+function imgUrl(v){
+let m=String(v||"").match(/https?:\/\/[^)\s]+/);
+return m?m[0]:"";
 }
 
-async function loadProducts(){
- const box=document.getElementById('products');
- box.innerHTML="<p>Chargement des produits...</p>";
+async function load(){
+try{
+let r=await fetch(API+"/api/products?limit=50");
+let d=await r.json();
 
- try{
-  const response=await fetch(API_URL);
-  if(!response.ok)throw new Error("Erreur serveur");
+if(!r.ok||!Array.isArray(d.products))
+throw Error(d.error||"Erreur catalogue");
 
-  const data=await response.json();
-  if(!data.success||!Array.isArray(data.products))throw new Error("Données invalides");
+products=d.products.map(p=>({
+sku:p.sku,
+name:p.name||"Produit",
+price:Number(p.suggested_retail_price||p.minimum_selling_price||0),
+min:Number(p.minimum_selling_price||0),
+stock:Number(p.stock_quantity||0),
+active:p.is_active!==false,
+supplier:String(p.supplier_group_id||""),
+image:imgUrl(p.main_image||(p.images||[])[0])
+}));
 
-  products.splice(0,products.length,...data.products
-   .filter(p=>p.is_active&&p.stock_status==="in_stock"&&p.stock_quantity>0)
-   .map(p=>({
-    id:p.sku,
-    sku:p.sku,
-    name:p.name,
-    cat:p.category||"Tout",
-    price:Math.max(Number(p.suggested_retail_price)||0,Number(p.minimum_selling_price)||0),
-    cost:Number(p.fulfillment_price)||0,
-    image:imageUrl(p.main_image),
-    stock:Number(p.stock_quantity)||0,
-    emoji:"🛍️"
-   }))
-  );
+draw();
 
-  render();
- }catch(error){
-  box.innerHTML="<p>Impossible de charger les produits. Réessayez plus tard.</p>";
- }
+if(d.pagination?.has_more)
+$("status").textContent="أول 50 منتج ظاهرين حالياً.";
+
+}catch(e){
+$("status").textContent="تعذر تحميل المنتجات: "+e.message;
 }
 }
- const box=document.getElementById('products');
- box.innerHTML="<p>Chargement des produits...</p>";
- try{
-  const response=await fetch(API_URL);
-  if(!response.ok)throw new Error("Erreur serveur");
-  const data=await response.json();
-  if(!data.success||!Array.isArray(data.products))throw new Error("Données invalides");
 
-  products.splice(0,products.length,...data.products
-   .filter(p=>p.is_active&&p.stock_status==="in_stock"&&p.stock_quantity>0)
-   .map(p=>({
-    id:p.sku,
-    sku:p.sku,
-    name:p.name,
-    cat:p.category||"Tout",
-    price:Math.max(Number(p.suggested_retail_price)||0,Number(p.minimum_selling_price)||0),
-    cost:Number(p.fulfillment_price)||0,
-    image:imageUrl(p.main_image),
-    stock:Number(p.stock_quantity)||0,
-    emoji:"🛍️"
-   }))
-  );
-  render();
- }catch(error){
-  box.innerHTML="<p>Impossible de charger les produits. Réessayez plus tard.</p>";
- }
+function draw(){
+
+let term=$("search").value.toLowerCase();
+
+let list=products.filter(p=>
+p.active&&p.sku&&p.stock>0&&p.price>0&&
+(p.name.toLowerCase().includes(term)||p.sku.toLowerCase().includes(term))
+);
+
+if($("sort").value==="asc")
+list.sort((a,b)=>a.price-b.price);
+
+if($("sort").value==="desc")
+list.sort((a,b)=>b.price-a.price);
+
+$("products").innerHTML="";
+
+if(!list.length){
+$("status").style.display="block";
+$("status").textContent="لا توجد منتجات حالياً.";
+return;
 }
 
-function render(){
- const q=document.getElementById('search').value.toLowerCase();
- const list=products.filter(p=>
-  (category==="Tout"||p.cat===category)&&
-  p.name.toLowerCase().includes(q)
- );
- document.getElementById('resultCount').textContent=list.length+" produit(s)";
- document.getElementById('products').innerHTML=list.map(p=>`
- <article class="product">
-  <div class="photo">
-   ${p.image?`<img src="${p.image}" alt="" style="width:100%;height:100%;object-fit:contain" onerror="this.style.display='none'">`:p.emoji}
-  </div>
-  <div class="info">
-   <div class="category">Disponible</div>
-   <h3>${p.name}</h3>
-   <div><span class="price">${p.price} DH</span></div>
-   <small>En stock : ${p.stock}</small>
-   <button class="primary" onclick="add('${p.id}')">Ajouter au panier</button>
-  </div>
- </article>`).join('')||'<p>Aucun produit trouvé.</p>';
+$("status").style.display="none";
+
+list.forEach(p=>{
+
+let c=document.createElement("article");
+c.className="card";
+
+let ph=document.createElement("div");
+ph.className="photo";
+
+if(p.image){
+let im=document.createElement("img");
+im.src=p.image;
+im.alt=p.name;
+ph.append(im);
+}else{
+ph.textContent="SouqNova";
 }
 
-loadProducts();
-function add(id){let item=cart.find(x=>x.id===id);if(item)item.qty++;else cart.push({id,qty:1});updateCart()}
-function updateCart(){
- document.getElementById('count').textContent=cart.reduce((s,x)=>s+x.qty,0);
- document.getElementById('cartItems').innerHTML=cart.length?cart.map(x=>{let p=products.find(y=>y.id===x.id);return `<div class="cartline"><div>${p.emoji} <b>${p.name}</b><small>${p.price} DH × ${x.qty}</small></div><div><b>${p.price*x.qty} DH</b><br><button class="close" onclick="changeQty(${x.id},-1)">−</button> <button class="close" onclick="changeQty(${x.id},1)">+</button></div></div>`}).join(''):'<p>Votre panier est vide.</p>';
- let sum=cart.reduce((s,x)=>s+products.find(p=>p.id===x.id).price*x.qty,0);document.getElementById('total').textContent="Total : "+sum+" DH";
+let inf=document.createElement("div");
+inf.className="info";
+
+let n=document.createElement("div");
+n.className="name";
+n.textContent=p.name;
+
+let ref=document.createElement("div");
+ref.className="muted";
+ref.textContent="Réf. "+p.sku;
+
+let pr=document.createElement("div");
+pr.className="price";
+pr.textContent=money(p.price);
+
+let b=document.createElement("button");
+b.className="add";
+b.textContent="Ajouter au panier";
+b.onclick=()=>add(p);
+
+inf.append(n,ref,pr,b);
+c.append(ph,inf);
+
+$("products").append(c);
+
+});
 }
-function changeQty(id,n){let x=cart.find(y=>y.id===id);if(x){x.qty+=n;if(x.qty<=0)cart=cart.filter(y=>y.id!==id)}updateCart()}
-function openCart(){updateCart();document.getElementById('overlay').style.display='flex'}
-function closeCart(){document.getElementById('overlay').style.display='none'}
-function sendOrder(){
- const name=document.getElementById('customer').value.trim(),phone=document.getElementById('phone').value.trim(),address=document.getElementById('address').value.trim();
- if(!cart.length)return alert("Votre panier est vide.");if(!name||!phone||!address)return alert("Veuillez remplir vos coordonnées.");
- const lines=cart.map(x=>{let p=products.find(y=>y.id===x.id);return `${p.name} x${x.qty} — ${p.price*x.qty} DH`}).join("\n");
- const total=cart.reduce((s,x)=>s+products.find(p=>p.id===x.id).price*x.qty,0);
- const msg=`Bonjour, je souhaite commander :\n${lines}\nTotal : ${total} DH\nNom : ${name}\nTéléphone : ${phone}\nAdresse : ${address}`;
- const WHATSAPP_NUMBER="212619442418"; // Numéro WhatsApp pour recevoir les demandes de commande
- if(WHATSAPP_NUMBER==="212600000000")return alert("Démo : remplacez le numéro WhatsApp 212600000000 dans le code par votre numéro, puis réessayez.\n\n"+msg);
- window.open("https://wa.me/"+WHATSAPP_NUMBER+"?text="+encodeURIComponent(msg),"_blank");
+
+function add(p){
+let x=cart.get(p.sku);
+
+if(x)x.qty++;
+else cart.set(p.sku,{...p,qty:1});
+
+update();
 }
-render();updateCart();
+
+function update(){
+
+$("count").textContent=
+[...cart.values()].reduce((s,p)=>s+p.qty,0);
+
+$("cart").innerHTML="";
+
+let total=0;
+
+cart.forEach(p=>{
+
+total+=p.price*p.qty;
+
+let row=document.createElement("div");
+row.className="line";
+
+let label=document.createElement("span");
+label.textContent=`${p.name} · ${money(p.price)} × ${p.qty}`;
+
+let ctr=document.createElement("span");
+
+let minus=document.createElement("button");
+minus.textContent="−";
+minus.onclick=()=>qty(p.sku,-1);
+
+let plus=document.createElement("button");
+plus.textContent="+";
+plus.onclick=()=>qty(p.sku,1);
+
+ctr.append(minus,plus);
+row.append(label,ctr);
+
+$("cart").append(row);
+
+});
+
+$("subtotal").textContent="Sous-total : "+money(total);
+}
+
+function qty(s,d){
+let p=cart.get(s);
+p.qty+=d;
+
+if(p.qty<1)cart.delete(s);
+
+update();
+}
+
+$("open").onclick=()=>{
+$("overlay").classList.add("open");
+update();
+};
+
+$("close").onclick=()=>{
+$("overlay").classList.remove("open");
+};
+
+$("search").oninput=draw;
+$("sort").onchange=draw;
+
+async function post(path,data){
+
+let r=await fetch(API+path,{
+method:"POST",
+headers:{"Content-Type":"application/json"},
+body:JSON.stringify(data)
+});
+
+let d=await r.json();
+
+if(!r.ok||d.success===false)
+throw Error(d.error||d.message||"Erreur API");
+
+return d;
+}
+
+function err(t){
+$("err").style.display="block";
+$("err").textContent=t;
+$("ok").style.display="none";
+}
+
+function ok(t){
+$("ok").style.display="block";
+$("ok").textContent=t;
+$("err").style.display="none";
+}
+
+$("form").onsubmit=async e=>{
+
+e.preventDefault();
+
+let btn=$("send");
+
+if(pending){
+
+btn.disabled=true;
+btn.textContent="Envoi au fournisseur...";
+
+try{
+
+let d=await post("/api/orders",pending);
+let x=d.results?.[0];
+
+if(x&&x.status!=="created"&&x.status!=="duplicate")
+throw Error(x.error||x.status);
+
+ok("تم إرسال الطلب إلى المورد. رقم الطلب: "+(x?.order_id||"تم الاستلام"));
+
+cart.clear();
+pending=null;
+update();
+
+btn.textContent="تم الإرسال";
+
+}catch(ex){
+
+err("لم نتأكد من إنشاء الطلب: "+ex.message);
+btn.disabled=false;
+btn.textContent="إعادة المحاولة";
+
+}
+
+return;
+}
+
+if(!cart.size){
+err("السلة فارغة");
+return;
+}
+
+let items=[...cart.values()];
+
+let groups=[...new Set(items.map(p=>p.supplier).filter(Boolean))];
+
+if(groups.length>1){
+err("السلة فيها منتجات من موردين مختلفين. قسمها لطلبات منفصلة.");
+return;
+}
+
+if(items.some(p=>p.price<p.min)){
+err("ثمن أحد المنتجات أقل من الحد الأدنى للبيع.");
+return;
+}
+
+let f=new FormData(e.target);
+
+let customer={
+customer_name:String(f.get("customer_name")).trim(),
+customer_phone:String(f.get("customer_phone")).replace(/\s/g,""),
+city:String(f.get("city")).trim(),
+address:String(f.get("address")).trim(),
+notes:String(f.get("notes")||"").trim()
+};
+
+if(!/^(05|06|07)\d{8}$/.test(customer.customer_phone)){
+err("رقم الهاتف خاصو 10 أرقام ويبدأ بـ05 أو06 أو07");
+return;
+}
+
+let fee=/casablanca|الدار البيضاء/i.test(customer.city)?20:30;
+
+let sub=items.reduce((s,p)=>s+p.price*p.qty,0);
+
+btn.disabled=true;
+btn.textContent="Vérification...";
+
+try{
+
+let q=await post("/api/quote",{
+city:customer.city,
+customer_shipping_fee:fee,
+cod_to_collect:sub+fee,
+items:items.map(p=>({
+sku:p.sku,
+quantity:p.qty,
+retail_price:p.price
+}))
+});
+
+pending={
+external_order_id:"SN-"+Date.now()+"-"+Math.random().toString(36).slice(2,8),
+...customer,
+customer_shipping_fee:fee,
+items:items.map(p=>({
+product_code:p.sku,
+quantity:p.qty,
+retail_price:p.price,
+supplier_group_id:p.supplier
+}))
+};
+
+ok(
+`مراجعة: المنتجات ${money(sub)} + الشحن ${money(fee)} = ${money(sub+fee)} عند الاستلام. تحقق مورد: ${JSON.stringify(q).slice(0,500)}. اضغط مرة ثانية لإرسال الطلب فعلياً.`
+);
+
+btn.textContent="تأكيد وإرسال الطلب للمورد";
+btn.disabled=false;
+
+}catch(ex){
+
+err("فشل التحقق، لم يتم إرسال الطلب: "+ex.message);
+btn.textContent="تحقق من السعر";
+btn.disabled=false;
+
+}
+
+};
+
+load();
 </script>
-</body></html>
+
+</body>
+</html>
