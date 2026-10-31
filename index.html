@@ -346,8 +346,6 @@ $("ok").textContent=t;
 $("err").style.display="none";
 }
 
-$("form").onsubmit=async e=>{
-
 e.preventDefault();
 
 let btn=$("send");
@@ -362,10 +360,11 @@ try{
 let d=await post("/api/orders",pending);
 let x=d.results?.[0];
 
-if(x&&x.status!=="created"&&x.status!=="duplicate")
-throw Error(x.error||x.status);
+if(d.success!==true || !x || !["created","duplicate"].includes(x.status)){
+throw Error(x?.error||x?.status||"Réponse fournisseur غير مؤكدة");
+}
 
-ok("تم إرسال الطلب إلى المورد. رقم الطلب: "+(x?.order_id||"تم الاستلام"));
+ok("تم تأكيد الطلب من المورد. رقم الطلب: "+(x.order_id||"تم الاستلام"));
 
 cart.clear();
 pending=null;
@@ -438,6 +437,10 @@ retail_price:p.price
 }))
 });
 
+if(q.success!==true || q.is_valid!==true){
+throw Error(q.error||q.message||"عرض السعر غير صالح عند المورد");
+}
+
 pending={
 external_order_id:"SN-"+Date.now()+"-"+Math.random().toString(36).slice(2,8),
 ...customer,
@@ -451,7 +454,7 @@ supplier_group_id:p.supplier
 };
 
 ok(
-`مراجعة: المنتجات ${money(sub)} + الشحن ${money(fee)} = ${money(sub+fee)} عند الاستلام. تحقق مورد: ${JSON.stringify(q).slice(0,500)}. اضغط مرة ثانية لإرسال الطلب فعلياً.`
+`مراجعة: المنتجات ${money(sub)} + الشحن ${money(fee)} = ${money(sub+fee)} عند الاستلام. المورد أكد صلاحية عرض السعر. لم يتم إرسال الطلب بعد.`
 );
 
 btn.textContent="تأكيد وإرسال الطلب للمورد";
@@ -459,6 +462,7 @@ btn.disabled=false;
 
 }catch(ex){
 
+pending=null;
 err("فشل التحقق، لم يتم إرسال الطلب: "+ex.message);
 btn.textContent="تحقق من السعر";
 btn.disabled=false;
@@ -466,7 +470,6 @@ btn.disabled=false;
 }
 
 };
-
 load();
 </script>
 
