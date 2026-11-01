@@ -47,11 +47,49 @@ footer{text-align:center;padding:30px;color:#68766f}
 .overlay{align-items:center}
 .panel{border-radius:18px}
 }
+
+/* SouqNova refreshed storefront theme */
+:root{--forest:#173f35;--forest2:#245748;--cream:#fbf7ef;--sand:#f1e8d9;--coral:#e97855;--gold:#e8bd65;--ink:#25332d;--muted:#77847c}
+body{background:var(--cream);color:var(--ink);font-family:Arial,"Noto Sans Arabic",sans-serif}
+.top-strip{background:#102f29;color:#f9f3e7;text-align:center;padding:9px 12px;font-size:12px;letter-spacing:.2px}
+header{background:var(--forest);padding:16px max(5%,calc((100% - 1180px)/2));box-shadow:0 3px 14px #173f351c}
+.logo{font-size:28px;letter-spacing:-1px}.logo span{color:var(--gold)}
+button{border-radius:12px;transition:transform .18s,background .18s}
+button:active{transform:scale(.98)}
+.cartbtn{background:var(--coral);color:white;padding:12px 17px}
+.langbtn{background:#fff8ec;color:var(--forest);border:1px solid #e9ddc9}
+.hero{position:relative;overflow:hidden;background:linear-gradient(112deg,#173f35 0%,#245748 62%,#356b57 100%);padding:54px max(5%,calc((100% - 1180px)/2)) 58px;color:#fffaf0}
+.hero:after{content:"";position:absolute;width:290px;height:290px;border:1px solid #ffffff20;border-radius:50%;right:7%;top:-135px;box-shadow:0 0 0 35px #ffffff08,0 0 0 75px #ffffff06;pointer-events:none}
+.hero h1{max-width:700px;font-size:clamp(32px,5vw,54px);line-height:1.14;letter-spacing:-1.2px;margin:0 0 14px}
+.hero p{max-width:560px;color:#e5eee7;font-size:16px;line-height:1.8;margin:0}
+main{max-width:1180px;margin:0 auto;padding:30px 18px 48px}
+.bar{background:#fff;border:1px solid #eee5d8;border-radius:16px;padding:12px;margin-bottom:22px;box-shadow:0 5px 20px #4b39200a}
+.bar input,.bar select,.field input,.field textarea{border:1px solid #e9e1d5;border-radius:11px;background:#fffdf9;min-height:46px}
+.bar input:focus,.bar select:focus,.field input:focus,.field textarea:focus{outline:2px solid #e8bd6580;border-color:#c99b4c}
+.grid{gap:17px}
+.card{background:#fff;border:1px solid #eee6da;border-radius:17px;box-shadow:0 5px 18px #3b33200b;transition:transform .2s,box-shadow .2s}
+@media(hover:hover) and (pointer:fine){.card:hover{transform:translateY(-4px);box-shadow:0 12px 26px #3b332018}}
+.photo{background:linear-gradient(145deg,#f6f1e8,#eee6d8);height:205px;padding:10px}
+.photo img{mix-blend-mode:multiply}
+.info{padding:14px}
+.name{color:#293a32;line-height:1.45;min-height:42px}
+.price{color:var(--forest);font-size:21px;margin:11px 0}
+.muted{color:#8a938c}
+.add,.submit{background:var(--forest);color:white;border-radius:11px;padding:12px}
+.add:hover,.submit:hover{background:var(--forest2)}
+.notice{background:#fff;border:1px solid #eee5d8;color:var(--muted)}
+footer{background:#102f29;color:#e7eee8;padding:28px 16px}
+.panel{background:var(--cream)}
+.close{background:#eee6da;color:var(--forest)}
+.error{background:#fff0eb;color:#a43c25}.success{background:#edf6eb;color:#285d3e}
+[dir="rtl"] .hero:after{right:auto;left:7%}
+@media(max-width:520px){.hero{padding:39px 20px 43px}.hero h1{font-size:34px}.hero p{font-size:14px}.bar{padding:9px;gap:7px}.bar select{max-width:43%;font-size:12px}.grid{gap:10px}.photo{height:145px}.info{padding:10px}.add{font-size:12px}}
+
 </style>
 </head>
 
 <body>
-
+<div class="top-strip" id="topStrip">Livraison partout au Maroc · Paiement à la livraison</div>
 <header>
 <div class="logo">Souq<span>Nova</span></div>
 <div class="head-actions"><button class="langbtn" id="langToggle" type="button">العربية</button><button class="cartbtn" id="open">Panier (<b id="count">0</b>)</button></div>
