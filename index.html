@@ -407,13 +407,24 @@ function productField(p, keys){
   for(const key of keys){
     const value=p[key];
     if(typeof value==="string" && value.trim()) return value.trim();
+    if(Array.isArray(value) && value.length) return value.map(x=>typeof x==="string"?x:(x?.name||x?.value||"")).filter(Boolean).join(" · ");
   }
   return "";
 }
+function productSpecs(p){
+  const labels=currentLang==="ar"
+    ? {brand:"العلامة التجارية",category:"الصنف",color:"اللون",size:"المقاس",material:"المادة",weight:"الوزن",dimensions:"الأبعاد",sku:"المرجع"}
+    : {brand:"Marque",category:"Catégorie",color:"Couleur",size:"Taille",material:"Matière",weight:"Poids",dimensions:"Dimensions",sku:"Référence"};
+  const keys={brand:["brand","brand_name"],category:["category","category_name"],color:["color","colour"],size:["size"],material:["material"],weight:["weight"],dimensions:["dimensions","dimension"],sku:["sku"]};
+  return Object.entries(keys).map(([k,aliases])=>{
+    const v=productField(p,aliases);
+    return v?labels[k]+": "+v:"";
+  }).filter(Boolean);
+}
 function openProduct(p){
   openedProduct=p;
-  const description=productField(p,["description_ar","arabic_description"]);
-  const usage=productField(p,["usage_ar","how_to_use_ar"]);
+  const description=productField(p,["description_ar","arabic_description","description","short_description","product_description"]);
+  const usage=productField(p,["usage_ar","how_to_use_ar","usage_instructions","instructions","how_to_use"]);
   $("products").hidden=true;
   $("status").hidden=true;
   $("productDetail").hidden=false;
@@ -424,7 +435,7 @@ function openProduct(p){
   $("usageHeading").textContent=tr("usage");
   $("detailDescription").textContent=description || tr("descriptionUnavailable");
   $("detailUsage").textContent=usage || tr("usageUnavailable");
-  const specs=[p.sku?tr("ref")+p.sku:"",p.stock>0?tr("available"):tr("unavailable")].filter(Boolean);
+  const specs=[...productSpecs(p),p.stock>0?tr("available"):tr("unavailable")].filter(Boolean);
   $("detailSpecs").textContent=specs.join(" · ");
   $("detailPhoto").innerHTML="";
   if(p.image){
