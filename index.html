@@ -297,6 +297,7 @@ async function load(){
     }
 
     products = allProducts.map(p => ({
+      ...p,
       sku: p.sku,
       name: p.name || "Produit",
       price: Number(
