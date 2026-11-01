@@ -118,6 +118,21 @@ footer{background:#102f29;color:#e7eee8;padding:28px 16px}
  .add{min-height:42px;font-size:12px;padding:9px 5px}
 }
 
+
+.product-detail{margin:24px 0 35px}
+.product-detail[hidden]{display:none}
+.close-detail{background:#eee6da;color:var(--forest);margin-bottom:14px}
+.detail-card{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:22px;background:#fff;border:1px solid #eee6da;border-radius:20px;padding:20px;box-shadow:0 5px 18px #3b33200b}
+.detail-photo{background:linear-gradient(145deg,#f6f1e8,#eee6d8);border-radius:16px;min-height:280px;display:grid;place-items:center;padding:18px}
+.detail-photo img{width:100%;height:100%;max-height:440px;object-fit:contain;mix-blend-mode:multiply}
+.detail-kicker{color:var(--muted);font-size:12px}
+.detail-info h2{color:var(--forest);line-height:1.45}
+.detail-info h3{font-size:16px;margin:20px 0 7px;color:var(--forest)}
+.detail-price{font-size:25px;font-weight:900;color:var(--forest)}
+.detail-copy{line-height:1.9;white-space:pre-line}
+.detail-specs{font-size:13px;color:var(--muted);line-height:1.7}
+.detail-add{max-width:320px}
+@media(max-width:650px){.detail-card{grid-template-columns:1fr;padding:13px}.detail-photo{min-height:220px}.detail-info{padding:4px}}
 </style>
 </head>
 
@@ -145,6 +160,23 @@ footer{background:#102f29;color:#e7eee8;padding:28px 16px}
 
 <div id="status" class="notice">Chargement...</div>
 <div id="products" class="grid"></div>
+<section id="productDetail" class="product-detail" hidden aria-live="polite">
+  <button type="button" class="close-detail" id="backToProducts">← <span id="backLabel">Retour aux produits</span></button>
+  <div class="detail-card">
+    <div class="detail-photo" id="detailPhoto"></div>
+    <div class="detail-info">
+      <p class="detail-kicker" id="detailKicker">Détails du produit</p>
+      <h2 id="detailName"></h2>
+      <div class="detail-price" id="detailPrice"></div>
+      <h3 id="descriptionHeading">Description</h3>
+      <p id="detailDescription" class="detail-copy"></p>
+      <h3 id="usageHeading">Mode d’utilisation</h3>
+      <p id="detailUsage" class="detail-copy"></p>
+      <p id="detailSpecs" class="detail-specs"></p>
+      <button type="button" class="add detail-add" id="detailAdd">Ajouter au panier</button>
+    </div>
+  </div>
+</section>
 </main>
 
 <footer id="footerText">SouqNova · Paiement à la livraison</footer>
@@ -210,6 +242,7 @@ const API="https://souqnova-api.ismailnhari666.workers.dev";
 const cart=new Map();
 let products=[];
 let pending=null;
+let openedProduct=null;
 
 const $=id=>document.getElementById(id);
 const money=n=>Number(n).toFixed(2).replace(/\.00$/,"")+" DH";
@@ -351,12 +384,17 @@ let pr=document.createElement("div");
 pr.className="price";
 pr.textContent=money(p.price);
 
+let details=document.createElement("button");
+details.className="close";
+details.textContent=tr("details");
+details.onclick=()=>openProduct(p);
+
 let b=document.createElement("button");
 b.className="add";
 b.textContent=tr("add");
 b.onclick=()=>add(p);
 
-inf.append(n,ref,pr,b);
+inf.append(n,ref,pr,details,b);
 c.append(ph,inf);
 
 $("products").append(c);
@@ -364,6 +402,63 @@ $("products").append(c);
 });
 }
 
+function productField(p, keys){
+  for(const key of keys){
+    const value=p[key];
+    if(typeof value==="string" && value.trim()) return value.trim();
+  }
+  return "";
+}
+function openProduct(p){
+  openedProduct=p;
+  const description=productField(p,["description_ar","arabic_description","description","short_description","details"]);
+  const usage=productField(p,["usage_ar","how_to_use_ar","usage_instructions","how_to_use","directions"]);
+  $("products").hidden=true;
+  $("status").hidden=true;
+  $("productDetail").hidden=false;
+  $("detailName").textContent=p.name;
+  $("detailPrice").textContent=money(p.price);
+  $("detailKicker").textContent=tr("details");
+  $("descriptionHeading").textContent=tr("description");
+  $("usageHeading").textContent=tr("usage");
+  $("detailDescription").textContent=description || tr("descriptionUnavailable");
+  $("detailUsage").textContent=usage || tr("usageUnavailable");
+  const specs=[p.sku?tr("ref")+p.sku:"",p.stock>0?tr("available"):tr("unavailable")].filter(Boolean);
+  $("detailSpecs").textContent=specs.join(" · ");
+  $("detailPhoto").innerHTML="";
+  if(p.image){
+    const img=document.createElement("img");
+    img.src=p.image; img.alt=p.name; img.loading="lazy";
+    $("detailPhoto").append(img);
+  }else{
+    const fallback=document.createElement("span");
+    fallback.className="photo-fallback"; fallback.textContent="SouqNova";
+    $("detailPhoto").append(fallback);
+  }
+  $("detailAdd").textContent=tr("add");
+  $("detailAdd").onclick=()=>add(p);
+  document.title=p.name+" | SouqNova";
+  history.pushState({product:p.sku},"","#product="+encodeURIComponent(p.sku));
+  window.scrollTo({top:0,behavior:"smooth"});
+}
+function closeProduct(){
+  $("productDetail").hidden=true;
+  $("products").hidden=false;
+  $("status").hidden=false;
+  openedProduct=null;
+  document.title=tr("seoTitle");
+  if(location.hash.startsWith("#product=")) history.pushState({},"",location.pathname+location.search);
+}
+$("backToProducts").addEventListener("click",closeProduct);
+window.addEventListener("popstate",()=>{
+  if(openedProduct){
+    $("productDetail").hidden=true;
+    $("products").hidden=false;
+    $("status").hidden=false;
+    openedProduct=null;
+    document.title=tr("seoTitle");
+  }
+});
 function add(p){
 let x=cart.get(p.sku);
 
@@ -588,7 +683,7 @@ btn.disabled=false;
 let currentLang = localStorage.getItem("souqnova_lang") || "fr";
 const translations = {
   fr: {
-    loading:"Chargement des produits...", loaded:" produits chargés", loadError:"Impossible de charger les produits : ",
+    seoTitle:"SouqNova | Boutique en ligne au Maroc", details:"Voir le produit", description:"Description du produit", usage:"Mode d’utilisation", descriptionUnavailable:"La description détaillée en arabe n’est pas encore disponible pour ce produit.", usageUnavailable:"Veuillez suivre les instructions du fabricant indiquées sur l’emballage. Aucune autre consigne d’utilisation n’a été fournie par le fournisseur.", back:"Retour aux produits", available:"Disponible", unavailable:"Indisponible", loading:"Chargement des produits...", loaded:" produits chargés", loadError:"Impossible de charger les produits : ",
     noProducts:"Aucun produit disponible pour le moment.", ref:"Réf. : ", add:"Ajouter au panier",
     subtotal:"Sous-total", sending:"Envoi...", sent:"Commande envoyée. Référence : ", done:"Commande envoyée",
     orderError:"Erreur lors de l'envoi : ", retry:"Réessayer", emptyCart:"Votre panier est vide.",
@@ -604,7 +699,7 @@ const translations = {
     langButton:"العربية", send:"Vérifier le prix"
   },
   ar: {
-    loading:"جارٍ تحميل المنتجات...", loaded:" منتج تم تحميله", loadError:"تعذر تحميل المنتجات: ",
+    seoTitle:"SouqNova | متجر إلكتروني بالمغرب", details:"عرض تفاصيل المنتج", description:"وصف المنتج", usage:"طريقة الاستعمال", descriptionUnavailable:"الوصف العربي المفصل غير متوفر لهذا المنتج حالياً. سنضيفه بعد التحقق من معلومات المورد.", usageUnavailable:"يرجى اتباع تعليمات الشركة المصنعة الموجودة على العبوة. لم يقدم المورد تعليمات استعمال إضافية مؤكدة.", back:"العودة إلى المنتجات", available:"متوفر", unavailable:"غير متوفر", loading:"جارٍ تحميل المنتجات...", loaded:" منتج تم تحميله", loadError:"تعذر تحميل المنتجات: ",
     noProducts:"لا توجد منتجات متاحة حالياً.", ref:"المرجع: ", add:"أضف إلى السلة",
     subtotal:"المجموع الفرعي", sending:"جارٍ الإرسال...", sent:"تم إرسال الطلب. رقم الطلب: ", done:"تم إرسال الطلب",
     orderError:"وقع خطأ أثناء إرسال الطلب: ", retry:"أعد المحاولة", emptyCart:"السلة فارغة.",
@@ -627,6 +722,7 @@ function setLanguage(lang){
   document.documentElement.lang = currentLang;
   document.documentElement.dir = currentLang === "ar" ? "rtl" : "ltr";
   $("topStrip").textContent = tr("top");
+  $("backLabel").textContent = tr("back");
   $("search").placeholder = tr("search");
   $("sort").options[0].textContent = tr("sort");
   $("sort").options[1].textContent = tr("asc");
