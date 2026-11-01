@@ -302,9 +302,22 @@ async function load(){
         params.set("cursor", cursor);
       }
 
-      const response = await fetch(
-        API + "/api/products?" + params.toString()
-      );
+      const controller = new AbortController();
+      const timeout = setTimeout(() => controller.abort(), 15000);
+      let response;
+      try {
+        response = await fetch(
+          API + "/api/products?" + params.toString(),
+          { signal: controller.signal }
+        );
+      } catch (networkError) {
+        if (networkError.name === "AbortError") {
+          throw new Error("Le serveur produits ne répond pas (délai dépassé).");
+        }
+        throw new Error("Connexion au serveur impossible : " + networkError.message);
+      } finally {
+        clearTimeout(timeout);
+      }
 
       const data = await response.json();
 
