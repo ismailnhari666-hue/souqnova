@@ -411,8 +411,8 @@ function productField(p, keys){
 }
 function openProduct(p){
   openedProduct=p;
-  const description=productField(p,["description_ar","arabic_description","description","short_description","details"]);
-  const usage=productField(p,["usage_ar","how_to_use_ar","usage_instructions","how_to_use","directions"]);
+  const description=productField(p,["description_ar","arabic_description"]);
+  const usage=productField(p,["usage_ar","how_to_use_ar"]);
   $("products").hidden=true;
   $("status").hidden=true;
   $("productDetail").hidden=false;
