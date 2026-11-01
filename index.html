@@ -218,8 +218,7 @@ footer{background:#102f29;color:#e7eee8;padding:28px 16px}
 
 <div class="field">
 <label id="cityLabel">Ville</label>
-<input name="city" required list="cities" placeholder="Rabat">
-<datalist id="cities"></datalist>
+<input name="city" required placeholder="Ex. : Rabat, Salé, Casablanca">
 </div>
 
 <div class="field">
@@ -258,54 +257,6 @@ let openedProduct=null;
 
 const $=id=>document.getElementById(id);
 const money=n=>Number(n).toFixed(2).replace(/\.00$/,"")+" DH";
-
-// Populate checkout city suggestions from the supplier API.
-// Manual entry remains available if the endpoint is unavailable.
-function cityNamesFrom(payload){
-  let list=Array.isArray(payload)?payload:null;
-  if(!list && payload && typeof payload==="object"){
-    for(const key of ["cities","data","results","result","items"]){
-      const value=payload[key];
-      if(Array.isArray(value)){list=value;break;}
-      if(value && typeof value==="object"){
-        for(const nested of ["cities","items","results"]){
-          if(Array.isArray(value[nested])){list=value[nested];break;}
-        }
-        if(list)break;
-      }
-    }
-  }
-  if(!list)return [];
-  return [...new Set(list.map(item=>{
-    if(typeof item==="string"||typeof item==="number")return String(item).trim();
-    if(!item||typeof item!=="object")return "";
-    return String(item.name||item.city||item.label||item.name_fr||item.city_name||item.nom||item.name_ar||"").trim();
-  }).filter(Boolean))].sort((a,b)=>a.localeCompare(b));
-}
-async function loadCities(){
-  const input=document.querySelector('input[name="city"]');
-  const list=$("cities");
-  if(!input||!list)return;
-  try{
-    const controller=new AbortController();
-    const timeout=setTimeout(()=>controller.abort(),10000);
-    let response;
-    try{response=await fetch(API+"/api/cities",{signal:controller.signal});}
-    finally{clearTimeout(timeout);}
-    if(!response.ok)return;
-    const names=cityNamesFrom(await response.json());
-    if(!names.length)return;
-    list.replaceChildren(...names.map(name=>{
-      const option=document.createElement("option");
-      option.value=name;
-      return option;
-    }));
-    input.placeholder=currentLang==="ar"?"اختر أو اكتب المدينة":"Choisissez ou saisissez une ville";
-  }catch(error){
-    // Suggestions are optional; never block manual entry or checkout.
-  }
-}
-
 
 function imgUrl(v){
   if(Array.isArray(v)) v=v[0];
@@ -824,7 +775,7 @@ const translations = {
     hero:"", heroText:"Une sélection de produits avec paiement à la livraison partout au Maroc.",
     search:"Rechercher un produit...", sort:"Tri par défaut", asc:"Prix croissant", desc:"Prix décroissant",
     cart:"Votre panier", close:"Fermer", name:"Nom complet", phone:"Téléphone marocain",
-    city:"Ville", address:"Adresse détaillée", notes:"Notes (facultatif)", footer:"SouqNova · Paiement à la livraison",
+    city:"Ville (ex. : Rabat)", address:"Adresse détaillée", notes:"Notes (facultatif)", footer:"SouqNova · Paiement à la livraison",
     langButton:"العربية", send:"Vérifier le prix"
   },
   ar: {
@@ -840,7 +791,7 @@ const translations = {
     hero:"اكتشف منتجات تستحق أن تكون من اختياراتك المفضلة.", heroText:"تشكيلة من المنتجات مع الدفع عند الاستلام في جميع أنحاء المغرب.",
     search:"ابحث عن منتج...", sort:"الترتيب الافتراضي", asc:"السعر من الأقل إلى الأعلى", desc:"السعر من الأعلى إلى الأقل",
     cart:"سلة المشتريات", close:"إغلاق", name:"الاسم الكامل", phone:"رقم الهاتف المغربي",
-    city:"المدينة", address:"العنوان بالتفصيل", notes:"ملاحظات (اختياري)", footer:"SouqNova · الدفع عند الاستلام",
+    city:"المدينة (مثال: الرباط)", address:"العنوان بالتفصيل", notes:"ملاحظات (اختياري)", footer:"SouqNova · الدفع عند الاستلام",
     langButton:"Français", send:"تحقق من السعر"
   }
 };
@@ -861,6 +812,7 @@ function setLanguage(lang){
   $("nameLabel").textContent = tr("name");
   $("phoneLabel").textContent = tr("phone");
   $("cityLabel").textContent = tr("city");
+  document.querySelector('input[name="city"]').placeholder = currentLang === "ar" ? "مثال: الرباط، سلا، الدار البيضاء" : "Ex. : Rabat, Salé, Casablanca";
   $("addressLabel").textContent = tr("address");
   $("notesLabel").textContent = tr("notes");
   $("footerText").textContent = tr("footer");
@@ -872,7 +824,6 @@ $("langToggle").addEventListener("click", () => setLanguage(currentLang === "fr"
 
 setLanguage(currentLang);
 load();
-loadCities();
 </script>
 
 </body>
