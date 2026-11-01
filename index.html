@@ -132,6 +132,13 @@ footer{background:#102f29;color:#e7eee8;padding:28px 16px}
 .detail-copy{line-height:1.9;white-space:pre-line}
 .detail-specs{font-size:13px;color:var(--muted);line-height:1.7}
 .detail-add{max-width:320px}
+.product-actions{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:auto}
+.product-actions button{width:100%;min-height:44px;margin:0;padding:10px 7px;font-size:13px}
+.details-btn{background:#fff8ec;color:var(--forest);border:1px solid #d9c8a9}
+.details-btn:hover{background:#f3eadb}
+.detail-photo{width:100%;min-height:280px;overflow:hidden}
+.detail-photo img{display:block;width:100%;height:100%;object-fit:contain}
+@media(max-width:520px){.product-actions{gap:6px}.product-actions button{font-size:11px;padding:9px 4px;min-height:42px}}
 @media(max-width:650px){.detail-card{grid-template-columns:1fr;padding:13px}.detail-photo{min-height:220px}.detail-info{padding:4px}}
 </style>
 </head>
@@ -408,7 +415,7 @@ pr.className="price";
 pr.textContent=money(p.price);
 
 let details=document.createElement("button");
-details.className="close";
+details.className="details-btn";
 details.textContent=tr("details");
 details.onclick=()=>openProduct(p);
 
@@ -417,7 +424,10 @@ b.className="add";
 b.textContent=tr("add");
 b.onclick=()=>add(p);
 
-inf.append(n,ref,pr,details,b);
+let actions=document.createElement("div");
+actions.className="product-actions";
+actions.append(details,b);
+inf.append(n,ref,pr,actions);
 c.append(ph,inf);
 
 $("products").append(c);
@@ -717,7 +727,7 @@ btn.disabled=false;
 let currentLang = localStorage.getItem("souqnova_lang") || "fr";
 const translations = {
   fr: {
-    seoTitle:"SouqNova | Boutique en ligne au Maroc", details:"Voir le produit", description:"Description du produit", usage:"Mode d’utilisation", descriptionUnavailable:"La description détaillée en arabe n’est pas encore disponible pour ce produit.", usageUnavailable:"Veuillez suivre les instructions du fabricant indiquées sur l’emballage. Aucune autre consigne d’utilisation n’a été fournie par le fournisseur.", back:"Retour aux produits", available:"Disponible", unavailable:"Indisponible", loading:"Chargement des produits...", loaded:" produits chargés", loadError:"Impossible de charger les produits : ",
+    seoTitle:"SouqNova | Boutique en ligne au Maroc", details:"Voir détails", description:"Description du produit", usage:"Mode d’utilisation", descriptionUnavailable:"La description détaillée en arabe n’est pas encore disponible pour ce produit.", usageUnavailable:"Veuillez suivre les instructions du fabricant indiquées sur l’emballage. Aucune autre consigne d’utilisation n’a été fournie par le fournisseur.", back:"Retour aux produits", available:"Disponible", unavailable:"Indisponible", loading:"Chargement des produits...", loaded:" produits chargés", loadError:"Impossible de charger les produits : ",
     noProducts:"Aucun produit disponible pour le moment.", ref:"Réf. : ", add:"Ajouter au panier",
     subtotal:"Sous-total", sending:"Envoi...", sent:"Commande envoyée. Référence : ", done:"Commande envoyée",
     orderError:"Erreur lors de l'envoi : ", retry:"Réessayer", emptyCart:"Votre panier est vide.",
@@ -733,7 +743,7 @@ const translations = {
     langButton:"العربية", send:"Vérifier le prix"
   },
   ar: {
-    seoTitle:"SouqNova | متجر إلكتروني بالمغرب", details:"عرض تفاصيل المنتج", description:"وصف المنتج", usage:"طريقة الاستعمال", descriptionUnavailable:"الوصف العربي المفصل غير متوفر لهذا المنتج حالياً. سنضيفه بعد التحقق من معلومات المورد.", usageUnavailable:"يرجى اتباع تعليمات الشركة المصنعة الموجودة على العبوة. لم يقدم المورد تعليمات استعمال إضافية مؤكدة.", back:"العودة إلى المنتجات", available:"متوفر", unavailable:"غير متوفر", loading:"جارٍ تحميل المنتجات...", loaded:" منتج تم تحميله", loadError:"تعذر تحميل المنتجات: ",
+    seoTitle:"SouqNova | متجر إلكتروني بالمغرب", details:"تفاصيل المنتج", description:"وصف المنتج", usage:"طريقة الاستعمال", descriptionUnavailable:"الوصف العربي المفصل غير متوفر لهذا المنتج حالياً. سنضيفه بعد التحقق من معلومات المورد.", usageUnavailable:"يرجى اتباع تعليمات الشركة المصنعة الموجودة على العبوة. لم يقدم المورد تعليمات استعمال إضافية مؤكدة.", back:"العودة إلى المنتجات", available:"متوفر", unavailable:"غير متوفر", loading:"جارٍ تحميل المنتجات...", loaded:" منتج تم تحميله", loadError:"تعذر تحميل المنتجات: ",
     noProducts:"لا توجد منتجات متاحة حالياً.", ref:"المرجع: ", add:"أضف إلى السلة",
     subtotal:"المجموع الفرعي", sending:"جارٍ الإرسال...", sent:"تم إرسال الطلب. رقم الطلب: ", done:"تم إرسال الطلب",
     orderError:"وقع خطأ أثناء إرسال الطلب: ", retry:"أعد المحاولة", emptyCart:"السلة فارغة.",
