@@ -356,10 +356,11 @@ function draw(){
 
 let term=$("search").value.toLowerCase();
 
-let list=products.filter(p=>
-p.active&&p.sku&&p.stock>0&&p.price>0&&
-(p.name.toLowerCase().includes(term)||p.sku.toLowerCase().includes(term))
-);
+let list=products.filter(p=>{
+const name=String(p.name||"").toLowerCase();
+const sku=String(p.sku||"").toLowerCase();
+return name.includes(term)||sku.includes(term);
+});
 
 if($("sort").value==="asc")
 list.sort((a,b)=>a.price-b.price);
@@ -422,7 +423,9 @@ details.onclick=()=>openProduct(p);
 let b=document.createElement("button");
 b.className="add";
 b.textContent=tr("add");
-b.onclick=()=>add(p);
+b.disabled=!(p.stock>0 && p.sku && p.price>0);
+if(b.disabled){b.textContent=tr("unavailable");b.style.opacity=".55";b.style.cursor="not-allowed";}
+b.onclick=()=>{if(!b.disabled)add(p);};
 
 let actions=document.createElement("div");
 actions.className="product-actions";
@@ -480,7 +483,9 @@ function openProduct(p){
     $("detailPhoto").append(fallback);
   }
   $("detailAdd").textContent=tr("add");
-  $("detailAdd").onclick=()=>add(p);
+  $("detailAdd").disabled=!(p.stock>0 && p.sku && p.price>0);
+  if($("detailAdd").disabled){$("detailAdd").textContent=tr("unavailable");$("detailAdd").style.opacity=".55";}
+  $("detailAdd").onclick=()=>{if(!$("detailAdd").disabled)add(p);};
   document.title=p.name+" | SouqNova";
   history.pushState({product:p.sku},"","#product="+encodeURIComponent(p.sku));
   window.scrollTo({top:0,behavior:"smooth"});
