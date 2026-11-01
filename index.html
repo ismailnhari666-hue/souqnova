@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="fr">
+<html lang="fr" dir="ltr">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
@@ -7,7 +7,7 @@
 <style>
 *{box-sizing:border-box}
 body{margin:0;background:#f5f7f3;color:#17231f;font-family:Arial}
-header{background:#123c31;color:white;padding:18px 5%;display:flex;justify-content:space-between;align-items:center;position:sticky;top:0}
+header{background:#123c31;color:white;padding:18px 5%;display:flex;justify-content:space-between;align-items:center;gap:10px;position:sticky;top:0;z-index:4}.head-actions{display:flex;gap:8px;align-items:center}.langbtn{background:#fff;color:#123c31;padding:10px 12px} [dir="rtl"] body{text-align:right}[dir="rtl"] .bar,[dir="rtl"] .head,[dir="rtl"] .line{flex-direction:row-reverse}[dir="rtl"] .field input,[dir="rtl"] .field textarea,[dir="rtl"] .bar input{ text-align:right}
 .logo{font-size:25px;font-weight:900}
 .logo span{color:#c8f169}
 button{border:0;border-radius:10px;padding:12px 16px;font-weight:bold;cursor:pointer}
@@ -54,12 +54,12 @@ footer{text-align:center;padding:30px;color:#68766f}
 
 <header>
 <div class="logo">Souq<span>Nova</span></div>
-<button class="cartbtn" id="open">Panier (<b id="count">0</b>)</button>
+<div class="head-actions"><button class="langbtn" id="langToggle" type="button">العربية</button><button class="cartbtn" id="open">Panier (<b id="count">0</b>)</button></div>
 </header>
 
 <section class="hero">
-<h1>Découvrez vos prochains coups de cœur.</h1>
-<p>Une sélection de produits avec paiement à la livraison partout au Maroc.</p>
+<h1 id="heroTitle">Découvrez vos prochains coups de cœur.</h1>
+<p id="heroText">Une sélection de produits avec paiement à la livraison partout au Maroc.</p>
 </section>
 
 <main>
@@ -76,13 +76,13 @@ footer{text-align:center;padding:30px;color:#68766f}
 <div id="products" class="grid"></div>
 </main>
 
-<footer>SouqNova · Paiement à la livraison</footer>
+<footer id="footerText">SouqNova · Paiement à la livraison</footer>
 
 <div class="overlay" id="overlay">
 <section class="panel">
 
 <div class="head">
-<h2>Votre panier</h2>
+<h2 id="cartTitle">Votre panier</h2>
 <button class="close" id="close">Fermer</button>
 </div>
 
@@ -92,28 +92,28 @@ footer{text-align:center;padding:30px;color:#68766f}
 <form id="form">
 
 <div class="field">
-<label>Nom complet</label>
+<label id="nameLabel">Nom complet</label>
 <input name="customer_name" required>
 </div>
 
 <div class="field">
-<label>Téléphone marocain</label>
+<label id="phoneLabel">Téléphone marocain</label>
 <input name="customer_phone" required inputmode="tel" maxlength="10" placeholder="0612345678">
 </div>
 
 <div class="field">
-<label>Ville</label>
+<label id="cityLabel">Ville</label>
 <input name="city" required list="cities" placeholder="Rabat">
 <datalist id="cities"></datalist>
 </div>
 
 <div class="field">
-<label>Adresse détaillée</label>
+<label id="addressLabel">Adresse détaillée</label>
 <textarea name="address" required></textarea>
 </div>
 
 <div class="field">
-<label>ملاحظات (اختياري)</label>
+<label id="notesLabel">ملاحظات (اختياري)</label>
 <textarea name="notes"></textarea>
 </div>
 
@@ -124,7 +124,7 @@ footer{text-align:center;padding:30px;color:#68766f}
 <div id="err" class="error"></div>
 <div id="ok" class="success"></div>
 
-<button class="submit" id="send">تحقق من السعر</button>
+<button class="submit" id="send">Vérifier le prix</button>
 
 <p class="small">
 أول ضغطة تتحقق من السعر فقط. الضغطة الثانية ترسل الطلب فعلياً للمورد.
@@ -153,7 +153,7 @@ async function load(){
   const grid = $("products");
 
   status.style.display = "block";
-  status.textContent = "جاري تحميل جميع المنتجات...";
+  status.textContent = tr("loading");
   grid.innerHTML = "";
 
   try {
@@ -210,12 +210,12 @@ async function load(){
 
     status.style.display = "block";
     status.textContent =
-      "تم تحميل " + products.length + " منتج بنجاح.";
+      products.length + tr("loaded");
 
   } catch (error) {
     status.style.display = "block";
     status.textContent =
-      "تعذر تحميل المنتجات: " + error.message;
+      tr("loadError") + error.message;
   }
 }
 function draw(){
@@ -237,7 +237,7 @@ $("products").innerHTML="";
 
 if(!list.length){
 $("status").style.display="block";
-$("status").textContent="لا توجد منتجات حالياً.";
+$("status").textContent=tr("noProducts");
 return;
 }
 
@@ -269,7 +269,7 @@ n.textContent=p.name;
 
 let ref=document.createElement("div");
 ref.className="muted";
-ref.textContent="Réf. "+p.sku;
+ref.textContent=tr("ref")+p.sku;
 
 let pr=document.createElement("div");
 pr.className="price";
@@ -277,7 +277,7 @@ pr.textContent=money(p.price);
 
 let b=document.createElement("button");
 b.className="add";
-b.textContent="Ajouter au panier";
+b.textContent=tr("add");
 b.onclick=()=>add(p);
 
 inf.append(n,ref,pr,b);
@@ -333,7 +333,7 @@ $("cart").append(row);
 
 });
 
-$("subtotal").textContent="Sous-total : "+money(total);
+$("subtotal").textContent=tr("subtotal")+" : "+money(total);
 }
 
 function qty(s,d){
@@ -392,7 +392,7 @@ let btn=$("send");
 if(pending){
 
 btn.disabled=true;
-btn.textContent="Envoi au fournisseur...";
+btn.textContent=tr("sending");
 
 try{
 
@@ -403,19 +403,19 @@ if(d.success!==true || !x || !["created","duplicate"].includes(x.status)){
 throw Error(x?.error||x?.status||"Réponse fournisseur غير مؤكدة");
 }
 
-ok("تم تأكيد الطلب من المورد. رقم الطلب: "+(x.order_id||"تم الاستلام"));
+ok(tr("sent")+(x.order_id||"—"));
 
 cart.clear();
 pending=null;
 update();
 
-btn.textContent="تم الإرسال";
+btn.textContent=tr("done");
 
 }catch(ex){
 
-err("لم نتأكد من إنشاء الطلب: "+ex.message);
+err(tr("orderError")+ex.message);
 btn.disabled=false;
-btn.textContent="إعادة المحاولة";
+btn.textContent=tr("retry");
 
 }
 
@@ -423,7 +423,7 @@ return;
 }
 
 if(!cart.size){
-err("السلة فارغة");
+err(tr("emptyCart"));
 return;
 }
 
@@ -432,12 +432,12 @@ let items=[...cart.values()];
 let groups=[...new Set(items.map(p=>p.supplier).filter(Boolean))];
 
 if(groups.length>1){
-err("السلة فيها منتجات من موردين مختلفين. قسمها لطلبات منفصلة.");
+err(tr("multi"));
 return;
 }
 
 if(items.some(p=>p.price<p.min)){
-err("ثمن أحد المنتجات أقل من الحد الأدنى للبيع.");
+err(tr("min"));
 return;
 }
 
@@ -452,7 +452,7 @@ notes:String(f.get("notes")||"").trim()
 };
 
 if(!/^(05|06|07)\d{8}$/.test(customer.customer_phone)){
-err("رقم الهاتف خاصو 10 أرقام ويبدأ بـ05 أو06 أو07");
+err(tr("phoneError"));
 return;
 }
 
@@ -461,7 +461,7 @@ let fee=/casablanca|الدار البيضاء/i.test(customer.city)?20:30;
 let sub=items.reduce((s,p)=>s+p.price*p.qty,0);
 
 btn.disabled=true;
-btn.textContent="Vérification...";
+btn.textContent=tr("quote");
 
 try{
 
@@ -493,22 +493,23 @@ supplier_group_id:p.supplier
 };
 
 ok(
-`مراجعة: المنتجات ${money(sub)} + الشحن ${money(fee)} = ${money(sub+fee)} عند الاستلام. المورد أكد صلاحية عرض السعر. لم يتم إرسال الطلب بعد.`
+tr("quoteOk")+money(sub+fee)+". "+tr("notSent")
 );
 
-btn.textContent="تأكيد وإرسال الطلب للمورد";
+btn.textContent=currentLang==="ar"?"تأكيد وإرسال الطلب للمورد":"Confirmer et envoyer au fournisseur";
 btn.disabled=false;
 
 }catch(ex){
 
 pending=null;
-err("فشل التحقق، لم يتم إرسال الطلب: "+ex.message);
-btn.textContent="تحقق من السعر";
+err(tr("quoteFail")+ex.message);
+btn.textContent=tr("verify");
 btn.disabled=false;
 
 }
 
 };
+setLanguage(currentLang);
 load();
 </script>
 
