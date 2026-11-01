@@ -187,6 +187,7 @@ footer{background:#102f29;color:#e7eee8;padding:28px 16px}
 <main>
 <div class="bar">
 <input id="search" placeholder="Rechercher un produit...">
+<select id="category" aria-label="Catégorie" hidden><option value="">Toutes les catégories</option></select>
 <select id="sort">
 <option value="">Tri par défaut</option>
 <option value="asc">Prix croissant</option>
@@ -383,6 +384,7 @@ async function load(){
       image: imgUrl(p.main_image || (p.images || [])[0])
     }));
 
+    refreshCategories();
     draw();
 
     status.style.display = "block";
@@ -395,14 +397,50 @@ async function load(){
       tr("loadError") + error.message;
   }
 }
+function productCategory(p){
+  const candidates=[
+    p.category_name,p.category_name_ar,p.category_name_fr,
+    p.category,p.product_category,p.category_title,
+    p.category?.name,p.category?.title,p.category?.name_ar,p.category?.name_fr
+  ];
+  for(const value of candidates){
+    const cleaned=cleanProductText(value);
+    if(cleaned && cleaned.length<90) return cleaned;
+  }
+  return "";
+}
+
+function refreshCategories(){
+  const select=$("category");
+  const previous=select.value;
+  const categories=[...new Set(products.map(productCategory).filter(Boolean))]
+    .sort((a,b)=>a.localeCompare(b,currentLang==="ar"?"ar":"fr"));
+  select.innerHTML="";
+  const all=document.createElement("option");
+  all.value="";
+  all.textContent=tr("allCategories");
+  select.append(all);
+  categories.forEach(category=>{
+    const option=document.createElement("option");
+    option.value=category;
+    option.textContent=category;
+    select.append(option);
+  });
+  select.hidden=categories.length<2;
+  select.value=categories.includes(previous)?previous:"";
+}
+
 function draw(){
 
 let term=$("search").value.toLowerCase();
+let selectedCategory=$("category").value;
 
 let list=products.filter(p=>{
 const name=String(p.name||"").toLowerCase();
 const sku=String(p.sku||"").toLowerCase();
-return name.includes(term)||sku.includes(term);
+const matchesSearch=name.includes(term)||sku.includes(term);
+const category=productCategory(p);
+return matchesSearch && (!selectedCategory || category===selectedCategory);
 });
 
 if($("sort").value==="asc")
@@ -799,7 +837,7 @@ const translations = {
     quoteFail:"Vérification impossible : ", verify:"Vérifier le prix",
     top:"Livraison partout au Maroc · Paiement à la livraison",
     hero:"", heroText:"Une sélection de produits avec paiement à la livraison partout au Maroc.",
-    search:"Rechercher un produit...", sort:"Tri par défaut", asc:"Prix croissant", desc:"Prix décroissant",
+    search:"Rechercher un produit...", allCategories:"Toutes les catégories", sort:"Tri par défaut", asc:"Prix croissant", desc:"Prix décroissant",
     cart:"Votre panier", close:"Fermer", name:"Nom complet", phone:"Téléphone marocain",
     city:"Ville (ex. : Rabat)", address:"Adresse détaillée", notes:"Notes (facultatif)", footer:"SouqNova · Paiement à la livraison",
     langButton:"العربية", send:"Vérifier le prix"
@@ -815,7 +853,7 @@ const translations = {
     quoteFail:"تعذر التحقق من السعر: ", verify:"تحقق من السعر",
     top:"التوصيل لجميع أنحاء المغرب · الدفع عند الاستلام",
     hero:"اكتشف منتجات تستحق أن تكون من اختياراتك المفضلة.", heroText:"تشكيلة من المنتجات مع الدفع عند الاستلام في جميع أنحاء المغرب.",
-    search:"ابحث عن منتج...", sort:"الترتيب الافتراضي", asc:"السعر من الأقل إلى الأعلى", desc:"السعر من الأعلى إلى الأقل",
+    search:"ابحث عن منتج...", allCategories:"جميع الفئات", sort:"الترتيب الافتراضي", asc:"السعر من الأقل إلى الأعلى", desc:"السعر من الأعلى إلى الأقل",
     cart:"سلة المشتريات", close:"إغلاق", name:"الاسم الكامل", phone:"رقم الهاتف المغربي",
     city:"المدينة (مثال: الرباط)", address:"العنوان بالتفصيل", notes:"ملاحظات (اختياري)", footer:"SouqNova · الدفع عند الاستلام",
     langButton:"Français", send:"تحقق من السعر"
@@ -830,6 +868,7 @@ function setLanguage(lang){
   $("topStrip").textContent = tr("top");
   $("backLabel").textContent = tr("back");
   $("search").placeholder = tr("search");
+  $("category").options[0].textContent = tr("allCategories");
   $("sort").options[0].textContent = tr("sort");
   $("sort").options[1].textContent = tr("asc");
   $("sort").options[2].textContent = tr("desc");
@@ -847,6 +886,7 @@ function setLanguage(lang){
   draw();
 }
 $("langToggle").addEventListener("click", () => setLanguage(currentLang === "fr" ? "ar" : "fr"));
+$("category").addEventListener("change", draw);
 
 setLanguage(currentLang);
 load();
