@@ -61,7 +61,7 @@ button:active{transform:scale(.98)}
 .hero{position:relative;overflow:hidden;background:linear-gradient(112deg,#173f35 0%,#245748 62%,#356b57 100%);padding:54px max(5%,calc((100% - 1180px)/2)) 58px;color:#fffaf0}
 .hero:after{content:"";position:absolute;width:290px;height:290px;border:1px solid #ffffff20;border-radius:50%;right:7%;top:-135px;box-shadow:0 0 0 35px #ffffff08,0 0 0 75px #ffffff06;pointer-events:none}
 .hero h1{max-width:700px;font-size:clamp(32px,5vw,54px);line-height:1.14;letter-spacing:-1.2px;margin:0 0 14px}
-.hero p{max-width:560px;color:#e5eee7;font-size:16px;line-height:1.8;margin:0}
+.hero h1{color:var(--gold);font-weight:900;text-align:right;text-shadow:0 1px 1px #0002}\n.hero p{max-width:700px;color:#e5eee7;font-size:16px;font-weight:300;line-height:1.9;margin:0;text-align:right}
 main{max-width:1180px;margin:0 auto;padding:30px 18px 48px}
 .bar{background:#fff;border:1px solid #eee5d8;border-radius:16px;padding:12px;margin-bottom:22px;box-shadow:0 5px 20px #4b39200a}
 .bar input,.bar select,.field input,.field textarea{border:1px solid #e9e1d5;border-radius:11px;background:#fffdf9;min-height:46px}
@@ -96,8 +96,8 @@ footer{background:#102f29;color:#e7eee8;padding:28px 16px}
 </header>
 
 <section class="hero">
-<h1 id="heroTitle"></h1>
-<p id="heroText">Une sélection de produits avec paiement à la livraison partout au Maroc.</p>
+<h1 id="heroTitle" lang="ar" dir="rtl">متجر نوڤا يرحب بكم</h1>
+<p id="heroText" lang="ar" dir="rtl">تشكيلة من المنتجات مع إمكانية الدفع عند الاستلام في جميع أنحاء المغرب.</p>
 </section>
 
 <main>
@@ -589,8 +589,6 @@ function setLanguage(lang){
   document.documentElement.lang = currentLang;
   document.documentElement.dir = currentLang === "ar" ? "rtl" : "ltr";
   $("topStrip").textContent = tr("top");
-  $("heroTitle").textContent = tr("hero");
-  $("heroText").textContent = tr("heroText");
   $("search").placeholder = tr("search");
   $("sort").options[0].textContent = tr("sort");
   $("sort").options[1].textContent = tr("asc");
