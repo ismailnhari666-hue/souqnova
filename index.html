@@ -164,9 +164,6 @@ footer{background:#102f29;color:#e7eee8;padding:28px 16px}
 <option value="desc">Prix décroissant</option>
 </select>
 </div>
-
-<div id="status" class="notice">Chargement...</div>
-<div id="products" class="grid"></div>
 <section id="productDetail" class="product-detail" hidden aria-live="polite">
   <button type="button" class="close-detail" id="backToProducts">← <span id="backLabel">Retour aux produits</span></button>
   <div class="detail-card">
@@ -184,6 +181,10 @@ footer{background:#102f29;color:#e7eee8;padding:28px 16px}
     </div>
   </div>
 </section>
+
+<div id="status" class="notice">Chargement...</div>
+<div id="products" class="grid"></div>
+
 </main>
 
 <footer id="footerText">SouqNova · Paiement à la livraison</footer>
@@ -501,7 +502,8 @@ function openProduct(p){
   $("detailAdd").onclick=()=>{if(!$("detailAdd").disabled)add(p);};
   document.title=p.name+" | SouqNova";
   history.pushState({product:p.sku},"","#product="+encodeURIComponent(p.sku));
-  window.scrollTo({top:0,behavior:"smooth"});
+  window.scrollTo({top:0,behavior:"instant"});
+  $("productDetail").scrollIntoView({block:"start",behavior:"instant"});
 }
 function closeProduct(){
   $("productDetail").hidden=true;
