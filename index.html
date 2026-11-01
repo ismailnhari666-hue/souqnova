@@ -61,7 +61,8 @@ button:active{transform:scale(.98)}
 .hero{position:relative;overflow:hidden;background:linear-gradient(112deg,#173f35 0%,#245748 62%,#356b57 100%);padding:54px max(5%,calc((100% - 1180px)/2)) 58px;color:#fffaf0}
 .hero:after{content:"";position:absolute;width:290px;height:290px;border:1px solid #ffffff20;border-radius:50%;right:7%;top:-135px;box-shadow:0 0 0 35px #ffffff08,0 0 0 75px #ffffff06;pointer-events:none}
 .hero h1{max-width:700px;font-size:clamp(32px,5vw,54px);line-height:1.14;letter-spacing:-1.2px;margin:0 0 14px}
-.hero h1{color:var(--gold);font-weight:900;text-align:right;text-shadow:0 1px 1px #0002}\n.hero p{max-width:700px;color:#e5eee7;font-size:16px;font-weight:300;line-height:1.9;margin:0;text-align:right}
+.hero h1{color:var(--gold);font-weight:900;text-align:right;text-shadow:0 1px 1px #0002}
+.hero p{max-width:700px;color:#e5eee7;font-size:16px;font-weight:300;line-height:1.9;margin:0;text-align:right}
 main{max-width:1180px;margin:0 auto;padding:30px 18px 48px}
 .bar{background:#fff;border:1px solid #eee5d8;border-radius:16px;padding:12px;margin-bottom:22px;box-shadow:0 5px 20px #4b39200a}
 .bar input,.bar select,.field input,.field textarea{border:1px solid #e9e1d5;border-radius:11px;background:#fffdf9;min-height:46px}
@@ -84,6 +85,28 @@ footer{background:#102f29;color:#e7eee8;padding:28px 16px}
 .error{background:#fff0eb;color:#a43c25}.success{background:#edf6eb;color:#285d3e}
 [dir="rtl"] .hero:after{right:auto;left:7%}
 @media(max-width:520px){.hero{padding:39px 20px 43px}.hero h1{font-size:34px}.hero p{font-size:14px}.bar{padding:9px;gap:7px}.bar select{max-width:43%;font-size:12px}.grid{gap:10px}.photo{height:145px}.info{padding:10px}.add{font-size:12px}}
+
+
+/* Product presentation polish */
+.grid{align-items:stretch;gap:20px}
+.card{display:flex;flex-direction:column;min-height:100%;border-radius:20px}
+.photo{height:auto;aspect-ratio:1/1;min-height:175px;padding:14px;position:relative;overflow:hidden}
+.photo img{width:100%;height:100%;object-fit:contain;transition:transform .25s ease}
+@media(hover:hover) and (pointer:fine){.card:hover .photo img{transform:scale(1.045)}}
+.info{display:flex;flex:1;flex-direction:column;padding:16px}
+.name{font-size:15px;line-height:1.5;min-height:3em;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;overflow-wrap:anywhere}
+.muted{font-size:11px;letter-spacing:.2px;margin-top:5px}
+.price{font-size:23px;font-weight:900;margin:12px 0 4px}
+.add{margin-top:auto;min-height:46px;font-size:14px;letter-spacing:.1px}
+.photo-fallback{font-size:18px;font-weight:900;color:#8b9a8e;letter-spacing:-.5px}
+@media(max-width:520px){
+ .grid{gap:12px}
+ .photo{min-height:0;padding:9px}
+ .info{padding:11px}
+ .name{font-size:13px;min-height:3em}
+ .price{font-size:18px;margin:9px 0 3px}
+ .add{min-height:42px;font-size:12px;padding:9px 5px}
+}
 
 </style>
 </head>
@@ -293,9 +316,14 @@ if(p.image){
 let im=document.createElement("img");
 im.src=p.image;
 im.alt=p.name;
+im.loading="lazy";
+im.onerror=()=>{ph.innerHTML="";let fallback=document.createElement("span");fallback.className="photo-fallback";fallback.textContent="SouqNova";ph.append(fallback);};
 ph.append(im);
 }else{
-ph.textContent="SouqNova";
+let fallback=document.createElement("span");
+fallback.className="photo-fallback";
+fallback.textContent="SouqNova";
+ph.append(fallback);
 }
 
 let inf=document.createElement("div");
