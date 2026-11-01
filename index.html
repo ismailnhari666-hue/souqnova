@@ -149,34 +149,75 @@ return m?m[0]:"";
 }
 
 async function load(){
-try{
-let r=await fetch(API+"/api/products?limit=50");
-let d=await r.json();
+  const status = $("status");
+  const grid = $("products");
 
-if(!r.ok||!Array.isArray(d.products))
-throw Error(d.error||"Erreur catalogue");
+  status.style.display = "block";
+  status.textContent = "جاري تحميل جميع المنتجات...";
+  grid.innerHTML = "";
 
-products=d.products.map(p=>({
-sku:p.sku,
-name:p.name||"Produit",
-price:Number(p.suggested_retail_price||p.minimum_selling_price||0),
-min:Number(p.minimum_selling_price||0),
-stock:Number(p.stock_quantity||0),
-active:p.is_active!==false,
-supplier:String(p.supplier_group_id||""),
-image:imgUrl(p.main_image||(p.images||[])[0])
-}));
+  try {
+    let allProducts = [];
+    let cursor = null;
+    let hasMore = true;
+    let pages = 0;
 
-draw();
+    while (hasMore && pages < 100) {
+      const params = new URLSearchParams({limit: "5"});
 
-if(d.pagination?.has_more)
-$("status").textContent="أول 50 منتج ظاهرين حالياً.";
+      if (cursor) {
+        params.set("cursor", cursor);
+      }
 
-}catch(e){
-$("status").textContent="تعذر تحميل المنتجات: "+e.message;
+      const response = await fetch(
+        API + "/api/products?" + params.toString()
+      );
+
+      const data = await response.json();
+
+      if (!response.ok || !Array.isArray(data.products)) {
+        throw new Error(data.error || "Erreur catalogue");
+      }
+
+      allProducts.push(...data.products);
+
+      const pagination = data.pagination || {};
+      hasMore = pagination.has_more === true;
+      cursor = pagination.next_cursor || null;
+
+      pages++;
+
+      if (hasMore && !cursor) {
+        throw new Error("Pagination: next_cursor manquant");
+      }
+    }
+
+    products = allProducts.map(p => ({
+      sku: p.sku,
+      name: p.name || "Produit",
+      price: Number(
+        p.suggested_retail_price ||
+        p.minimum_selling_price || 0
+      ),
+      min: Number(p.minimum_selling_price || 0),
+      stock: Number(p.stock_quantity || 0),
+      active: p.is_active !== false,
+      supplier: String(p.supplier_group_id || ""),
+      image: imgUrl(p.main_image || (p.images || [])[0])
+    }));
+
+    draw();
+
+    status.style.display = "block";
+    status.textContent =
+      "تم تحميل " + products.length + " منتج بنجاح.";
+
+  } catch (error) {
+    status.style.display = "block";
+    status.textContent =
+      "تعذر تحميل المنتجات: " + error.message;
+  }
 }
-}
-
 function draw(){
 
 let term=$("search").value.toLowerCase();
