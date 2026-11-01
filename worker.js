@@ -40,7 +40,17 @@ export default {
       }
 
       if (path === "/api/cities" && request.method === "GET") {
-        const r = await fetch(`${MOWARID_API}/cities`);
+        if (!env.MOWARID_API_KEY) {
+          return json({ success: false, error: "API key not configured" }, 500, cors);
+        }
+
+        const r = await fetch(`${MOWARID_API}/cities`, {
+          headers: {
+            Authorization: `Bearer ${env.MOWARID_API_KEY}`,
+            Accept: "application/json"
+          }
+        });
+
         return new Response(await r.text(), {
           status: r.status,
           headers: { ...cors, "Content-Type": "application/json" }
