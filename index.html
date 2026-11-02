@@ -43,7 +43,7 @@
 <style>
 *{box-sizing:border-box}
 body{margin:0;background:#f5f7f3;color:#17231f;font-family:Arial}
-header{background:#123c31;color:white;padding:18px 5%;display:flex;justify-content:space-between;align-items:center;gap:10px;position:sticky;top:0;z-index:4}.head-actions{display:flex;gap:8px;align-items:center}.langbtn{background:#fff;color:#123c31;padding:10px 12px} [dir="rtl"] body{text-align:right}[dir="rtl"] .bar,[dir="rtl"] .head,[dir="rtl"] .line{flex-direction:row-reverse}[dir="rtl"] .field input,[dir="rtl"] .field textarea,[dir="rtl"] .bar input{ text-align:right}
+header{background:#123c31;color:white;padding:18px 5%;display:flex;justify-content:space-between;align-items:center;gap:10px;position:sticky;top:0;z-index:4}.head-actions{display:flex;gap:8px;align-items:center;min-width:0}.header-search{width:clamp(105px,19vw,190px);min-width:0;height:44px;padding:10px 12px;border:1px solid #e9ddc9;border-radius:12px;background:#fffdf8;color:#25332d;font:inherit;font-size:14px;outline-offset:2px}.header-search::placeholder{color:#89938c}@media(max-width:520px){header{gap:8px;padding:12px 4%}.logo{font-size:23px}.head-actions{gap:6px}.header-search{width:clamp(88px,25vw,125px);height:40px;padding:8px;font-size:12px}.cartbtn,.langbtn{padding:10px 9px;font-size:12px}}.langbtn{background:#fff;color:#123c31;padding:10px 12px} [dir="rtl"] body{text-align:right}[dir="rtl"] .bar,[dir="rtl"] .head,[dir="rtl"] .line{flex-direction:row-reverse}[dir="rtl"] .field input,[dir="rtl"] .field textarea,[dir="rtl"] .bar input{ text-align:right}
 .logo{font-size:25px;font-weight:900}
 .logo span{color:#c8f169}
 button{border:0;border-radius:10px;padding:12px 16px;font-weight:bold;cursor:pointer}
@@ -176,24 +176,10 @@ footer{background:#102f29;color:#e7eee8;padding:28px 16px}
 <div class="top-strip" id="topStrip">Livraison partout au Maroc · Paiement à la livraison</div>
 <header>
 <div class="logo">Souq<span>Nova</span></div>
-<div class="head-actions"><button class="langbtn" id="langToggle" type="button">العربية</button><button class="cartbtn" id="open">Panier (<b id="count">0</b>)</button></div>
+<div class="head-actions"><input id="search" class="header-search" type="search" placeholder="Rechercher un produit..." aria-label="Rechercher un produit"><button class="langbtn" id="langToggle" type="button">العربية</button><button class="cartbtn" id="open">Panier (<b id="count">0</b>)</button></div>
 </header>
 
-<section class="hero">
-<h1 id="heroTitle" lang="ar" dir="rtl">متجر Nova</h1>
-<p id="heroText" lang="ar" dir="rtl">تشكيلة من المنتجات مع إمكانية الدفع عند الاستلام في جميع أنحاء المغرب.</p>
-</section>
-
 <main>
-<div class="bar">
-<input id="search" placeholder="Rechercher un produit...">
-<select id="category" aria-label="Catégorie" hidden><option value="">Toutes les catégories</option></select>
-<select id="sort">
-<option value="">Tri par défaut</option>
-<option value="asc">Prix croissant</option>
-<option value="desc">Prix décroissant</option>
-</select>
-</div>
 <section id="productDetail" class="product-detail" hidden aria-live="polite">
   <button type="button" class="close-detail" id="backToProducts">← <span id="backLabel">Retour aux produits</span></button>
   <div class="detail-card">
@@ -443,11 +429,7 @@ const category=productCategory(p);
 return matchesSearch && (!selectedCategory || category===selectedCategory);
 });
 
-if($("sort").value==="asc")
 list.sort((a,b)=>a.price-b.price);
-
-if($("sort").value==="desc")
-list.sort((a,b)=>b.price-a.price);
 
 $("products").innerHTML="";
 
@@ -869,9 +851,6 @@ function setLanguage(lang){
   $("backLabel").textContent = tr("back");
   $("search").placeholder = tr("search");
   $("category").options[0].textContent = tr("allCategories");
-  $("sort").options[0].textContent = tr("sort");
-  $("sort").options[1].textContent = tr("asc");
-  $("sort").options[2].textContent = tr("desc");
   $("cartTitle").textContent = tr("cart");
   $("close").textContent = tr("close");
   $("nameLabel").textContent = tr("name");
