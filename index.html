@@ -309,10 +309,12 @@ async function load(){
   try {
     let allProducts = [];
     let hasMore = true;
-    let page = 1;
+    let cursor = null;
+    let pages = 0;
 
     while (hasMore && pages < 100) {
-      const params = new URLSearchParams({limit: "50", page: String(page)});
+      const params = new URLSearchParams({limit: "50"});
+      if (cursor) params.set("cursor", cursor);
 
       const controller = new AbortController();
       const timeout = setTimeout(() => controller.abort(), 30000);
@@ -349,10 +351,14 @@ async function load(){
 
       const pagination = data.pagination || data.data?.pagination || {};
       hasMore = pagination.has_more === true;
-      page = Number(pagination.page || page) + 1;
+      cursor = pagination.next_cursor || null;
+      pages++;
 
-      if (hasMore && pageProducts.length === 0) {
-        throw new Error("La pagination du fournisseur a renvoyé une page vide.");
+      if (hasMore && !cursor) {
+        throw new Error("Pagination: next_cursor manquant");
+      }
+      if (hasMore && pages >= 100) {
+        throw new Error("Limite de pagination atteinte.");
       }
     }
 
