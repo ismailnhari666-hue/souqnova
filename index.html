@@ -48,132 +48,192 @@
 }
 </script>
 <style>
+/* SouqNova storefront: one token set, one stylesheet. */
+:root{
+  --ink:#14261f;--muted:#5b6a63;--line:#dde5e0;--bg:#f3f5f2;--paper:#fff;
+  --brand:#0e4a39;--brand-hi:#15634c;--brand-ink:#0a3427;--brand-soft:#e3eee8;
+  --saffron:#f0b43c;--saffron-hi:#f5c565;--saffron-ink:#3a2800;
+  --danger:#a8261c;--danger-bg:#fdeceb;--ok:#175c34;--ok-bg:#e7f4ec;--warn:#8a3b00;
+  --r-s:10px;--r-m:14px;
+  --font:system-ui,-apple-system,"Segoe UI",Roboto,"Noto Sans Arabic","Noto Sans",Tahoma,Arial,sans-serif;
+  --star:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cpolygon fill='%23b9c6be' points='32.0,2.0 38.9,15.4 53.2,10.8 48.6,25.1 62.0,32.0 48.6,38.9 53.2,53.2 38.9,48.6 32.0,62.0 25.1,48.6 10.8,53.2 15.4,38.9 2.0,32.0 15.4,25.1 10.8,10.8 25.1,15.4'/%3E%3C/svg%3E");
+}
 *{box-sizing:border-box}
-body{margin:0;background:#f5f7f3;color:#17231f;font-family:Arial}
-header{background:#123c31;color:white;padding:18px 5%;display:flex;justify-content:space-between;align-items:center;gap:10px;position:sticky;top:0;z-index:4}.head-actions{display:flex;gap:8px;align-items:center;min-width:0}.header-search{width:clamp(105px,19vw,190px);min-width:0;height:44px;padding:10px 12px;border:1px solid #e9ddc9;border-radius:12px;background:#fffdf8;color:#25332d;font:inherit;font-size:14px;outline-offset:2px}.header-search::placeholder{color:#89938c}@media(max-width:520px){header{gap:8px;padding:12px 4%}.logo{font-size:23px}.head-actions{gap:6px}.header-search{width:clamp(88px,25vw,125px);height:40px;padding:8px;font-size:12px}.cartbtn,.langbtn{padding:10px 9px;font-size:12px}}.langbtn{background:#fff;color:#123c31;padding:10px 12px} [dir="rtl"] body{text-align:right}[dir="rtl"] .head,[dir="rtl"] .line{flex-direction:row-reverse}[dir="rtl"] .field input,[dir="rtl"] .field textarea{ text-align:right}
-.logo{font-size:25px;font-weight:900}
-.logo span{color:#c8f169}
-button{border:0;border-radius:10px;padding:12px 16px;font-weight:bold;cursor:pointer}
-.cartbtn{background:#c8f169}
-main{max-width:1150px;margin:28px auto;padding:0 16px}
-.field input,.field textarea{padding:13px;border:1px solid #dfe7df;border-radius:9px;font:inherit;background:white}
-.grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}.card{min-width:0}.photo{height:170px}.info{padding:10px}.name{font-size:14px;overflow-wrap:anywhere}.price{font-size:18px}@media(max-width:520px){.grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}.photo{height:135px}.info{padding:9px}.name{font-size:13px}.price{font-size:16px}.add{padding:10px 6px;font-size:12px}}
-.card{background:white;border:1px solid #e5eae4;border-radius:15px;overflow:hidden}
-.photo{height:205px;background:#edf2ed;display:grid;place-items:center}
-.photo img{width:100%;height:100%;object-fit:contain}
-.info{padding:14px}
-.name{font-weight:bold;min-height:38px}
-.price{font-size:21px;font-weight:900;color:#123c31;margin:9px 0}
-.muted{font-size:12px;color:#718078}
-.add,.submit{background:#123c31;color:white;width:100%;margin-top:10px}
-.notice{padding:16px;background:white;border-radius:12px}
-.overlay{display:none;position:fixed;inset:0;background:#0008;z-index:5;align-items:flex-end;justify-content:center}
-.overlay.open{display:flex}
-.panel{background:white;width:min(650px,100%);max-height:94vh;overflow:auto;padding:20px;border-radius:18px 18px 0 0}
-.head,.line{display:flex;justify-content:space-between;gap:12px;align-items:center}
-.line{padding:10px 0;border-bottom:1px solid #eee}
-.field{display:grid;gap:5px;margin:11px 0}
-.field label{font-size:13px;font-weight:bold}
-.field textarea{min-height:65px}
-.error,.success{display:none;white-space:pre-wrap;padding:12px;border-radius:9px;margin:10px 0}
-.error{background:#fff0ee;color:#a21b13}
-.success{background:#eaf8ed;color:#14532d}
-.small{font-size:12px;color:#68766f;line-height:1.5}
-.close{background:#edf1ec}
-footer{text-align:center;padding:30px;color:#68766f}
-@media(min-width:700px){
-.overlay{align-items:center}
-.panel{border-radius:18px}
-}
-
-/* SouqNova refreshed storefront theme */
-:root{--forest:#173f35;--forest2:#245748;--cream:#fbf7ef;--sand:#f1e8d9;--coral:#e97855;--gold:#e8bd65;--ink:#25332d;--muted:#77847c}
-body{background:var(--cream);color:var(--ink);font-family:Arial,"Noto Sans Arabic",sans-serif}
-.top-strip{background:#102f29;color:#f9f3e7;text-align:center;padding:9px 12px;font-size:12px;letter-spacing:.2px}
-header{background:var(--forest);padding:16px max(5%,calc((100% - 1180px)/2));box-shadow:0 3px 14px #173f351c}
-.logo{font-size:28px;letter-spacing:-1px}.logo span{color:var(--gold)}
-button{border-radius:12px;transition:transform .18s,background .18s}
+[hidden]{display:none!important}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--font);font-size:16px;line-height:1.5}
+img{max-width:100%}
+h1,h2,h3,p{margin-block:0}
+button,input,select,textarea{font:inherit;color:inherit}
+button{border:0;border-radius:var(--r-s);padding:12px 16px;font-weight:600;cursor:pointer;transition:background-color .15s,border-color .15s,transform .1s}
 button:active{transform:scale(.98)}
-button:focus-visible,a:focus-visible{outline:3px solid #e8bd65;outline-offset:2px}
-.cartbtn{background:var(--coral);color:white;padding:12px 17px}
-.langbtn{background:#fff8ec;color:var(--forest);border:1px solid #e9ddc9}
-main{max-width:1180px;margin:0 auto;padding:30px 18px 48px}
-.field input,.field textarea{border:1px solid #e9e1d5;border-radius:11px;background:#fffdf9;min-height:46px}
-.field input:focus,.field textarea:focus{outline:2px solid #e8bd6580;border-color:#c99b4c}
-.grid{gap:17px}
-.card{background:#fff;border:1px solid #eee6da;border-radius:17px;box-shadow:0 5px 18px #3b33200b;transition:transform .2s,box-shadow .2s}
-@media(hover:hover) and (pointer:fine){.card:hover{transform:translateY(-4px);box-shadow:0 12px 26px #3b332018}}
-.photo{background:linear-gradient(145deg,#f6f1e8,#eee6d8);height:205px;padding:10px}
-.photo img{mix-blend-mode:multiply}
-.info{padding:14px}
-.name{color:#293a32;line-height:1.45;min-height:42px}
-.price{color:var(--forest);font-size:21px;margin:11px 0}
-.muted{color:#8a938c}
-.add,.submit{background:var(--forest);color:white;border-radius:11px;padding:12px}
-.add:hover,.submit:hover{background:var(--forest2)}
-.notice{background:#fff;border:1px solid #eee5d8;color:var(--muted)}
-footer{background:#102f29;color:#e7eee8;padding:28px 16px}footer a{color:inherit;text-decoration:underline}
-.panel{background:var(--cream)}
-.close{background:#eee6da;color:var(--forest)}
-.error{background:#fff0eb;color:#a43c25}.success{background:#edf6eb;color:#285d3e}
-@media(max-width:520px){.grid{gap:10px}.photo{height:145px}.info{padding:10px}.add{font-size:12px}}
+button:disabled{cursor:not-allowed;opacity:.55}
+:focus-visible{outline:3px solid var(--brand-hi);outline-offset:2px}
+header :focus-visible{outline-color:var(--saffron)}
 
-
-/* Product presentation polish */
-.grid{align-items:stretch;gap:20px}
-.card{display:flex;flex-direction:column;min-height:100%;border-radius:20px}
-.photo{height:auto;aspect-ratio:1/1;min-height:175px;padding:14px;position:relative;overflow:hidden}
-.photo img{width:100%;height:100%;object-fit:contain;transition:transform .25s ease}
-@media(hover:hover) and (pointer:fine){.card:hover .photo img{transform:scale(1.045)}}
-.info{display:flex;flex:1;flex-direction:column;padding:16px}
-.name{font-size:15px;line-height:1.5;min-height:3em;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;overflow-wrap:anywhere}
-.muted{font-size:11px;letter-spacing:.2px;margin-top:5px}
-.price{font-size:23px;font-weight:900;margin:12px 0 4px}
-.add{margin-top:auto;min-height:46px;font-size:14px;letter-spacing:.1px}
-.photo-fallback{font-size:18px;font-weight:900;color:#8b9a8e;letter-spacing:-.5px}
-@media(max-width:520px){
- .grid{gap:12px}
- .photo{min-height:0;padding:9px}
- .info{padding:11px}
- .name{font-size:13px;min-height:3em}
- .price{font-size:18px;margin:9px 0 3px}
- .add{min-height:42px;font-size:12px;padding:9px 5px}
+/* Header */
+header{position:sticky;top:0;z-index:20;background:var(--brand);color:#fff;display:grid;grid-template-columns:auto minmax(0,1fr) auto;grid-template-areas:"logo search actions";align-items:center;gap:10px 24px;padding:12px max(16px,calc((100% - 1200px)/2))}
+.logo{grid-area:logo;display:flex;align-items:center;gap:10px;min-width:0;white-space:nowrap;font-size:24px;font-weight:800;letter-spacing:-.03em;line-height:1;color:#fff;text-decoration:none}
+.logo span{color:var(--saffron)}
+.logo svg{width:30px;height:30px;flex:none;color:var(--saffron)}
+.header-search{grid-area:search;width:100%;max-width:560px;justify-self:center;height:44px;border:0;border-radius:var(--r-s);padding-block:0;padding-inline:42px 14px;background:#fff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%235b6a63' stroke-width='2' stroke-linecap='round'%3E%3Ccircle cx='11' cy='11' r='7'/%3E%3Cpath d='M20 20l-4-4'/%3E%3C/svg%3E") no-repeat 13px center/20px;color:var(--ink)}
+[dir="rtl"] .header-search{background-position:right 13px center}
+.header-search::placeholder{color:#7a8780}
+.head-actions{grid-area:actions;display:flex;gap:8px}
+.langbtn,.cartbtn{height:44px;padding:0 14px;display:flex;align-items:center;gap:8px}
+.langbtn{background:transparent;color:#fff;border:1px solid #ffffff59}
+.langbtn:hover{background:#ffffff1f}
+.cartbtn{background:var(--saffron);color:var(--saffron-ink)}
+.cartbtn:hover{background:var(--saffron-hi)}
+.cartbtn svg{width:20px;height:20px}
+.cartbtn b{min-width:22px;height:22px;padding:0 6px;border-radius:11px;background:var(--brand);color:#fff;font-size:12px;display:grid;place-items:center;font-variant-numeric:tabular-nums}
+.cartbtn b.bump{animation:bump .25s ease-out}
+@keyframes bump{50%{transform:scale(1.35)}}
+@media(max-width:720px){
+  header{grid-template-columns:minmax(0,1fr) auto;grid-template-areas:"logo actions" "search search";padding:10px 16px 12px;gap:10px 12px}
+  .header-search{max-width:none;justify-self:stretch}
+  .logo{font-size:22px}
+  .add{font-size:14px;padding-inline:8px}
+}
+@media(max-width:430px){
+  .cartbtn #cartLabel{display:none}
+  .langbtn,.cartbtn{padding:0 12px}
+  .logo svg{width:26px;height:26px}
+  .logo{font-size:20px;gap:8px}
 }
 
+/* Trust band: facts that are true for every order */
+.trust{background:#fff;border-bottom:1px solid var(--line)}
+.trust ul{list-style:none;margin:0 auto;padding:12px 16px;max-width:1200px;display:flex;gap:28px;overflow-x:auto;scrollbar-width:none}
+.trust ul::-webkit-scrollbar{display:none}
+.trust li{display:flex;align-items:center;gap:10px;flex:none}
+.trust svg{width:26px;height:26px;flex:none;color:var(--brand);fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.trust b{display:block;font-size:14px;line-height:1.25}
+.trust small{display:block;font-size:12px;color:var(--muted);line-height:1.3}
+@media(min-width:960px){.trust ul{justify-content:space-between}}
 
-.product-detail{margin:24px 0 35px}
-.product-detail[hidden]{display:none}
-.close-detail{background:#eee6da;color:var(--forest);margin-bottom:14px}
-.detail-card{display:flex;flex-direction:column;gap:16px;background:#fff;border:1px solid #eee6da;border-radius:20px;padding:20px;box-shadow:0 5px 18px #3b33200b}
-.detail-photo{background:linear-gradient(145deg,#f6f1e8,#eee6d8);border-radius:16px;min-height:280px;display:grid;place-items:center;padding:18px}
-.detail-photo img{width:100%;height:100%;max-height:440px;object-fit:contain;mix-blend-mode:multiply}
-.detail-kicker{color:var(--muted);font-size:12px}
-.detail-info h2{color:var(--forest);line-height:1.45}
-.detail-info h3{font-size:16px;margin:20px 0 7px;color:var(--forest)}
-.detail-price{font-size:25px;font-weight:900;color:var(--forest)}
-.detail-copy{line-height:1.9;white-space:pre-line;margin:0}
+/* Catalogue */
+main{max-width:1200px;margin:0 auto;padding:20px 16px 48px}
+.toolbar{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:14px}
+.count{font-size:14px;color:var(--muted);font-variant-numeric:tabular-nums}
+.sort{display:flex;align-items:center;gap:8px;font-size:14px;color:var(--muted)}
+.sort select{height:40px;border:1px solid #c9d4ce;border-radius:var(--r-s);background:#fff;padding:0 10px;color:var(--ink);cursor:pointer}
+.notice{padding:18px;background:#fff;border:1px solid var(--line);border-radius:var(--r-m);color:var(--muted);text-align:center}
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+@media(min-width:720px){.grid{grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}}
+@media(min-width:1040px){.grid{grid-template-columns:repeat(4,minmax(0,1fr))}}
+.card{display:flex;flex-direction:column;min-width:0;background:var(--paper);border:1px solid var(--line);border-radius:var(--r-m);overflow:hidden}
+@media(hover:hover) and (pointer:fine){.card:hover{border-color:#b4c8bd}}
+.photo{aspect-ratio:1/1;display:grid;place-items:center;padding:12px;background:#fff;border-bottom:1px solid #edf1ee}
+.photo img{width:100%;height:100%;object-fit:contain}
+.photo-fallback{display:block;width:56px;height:56px;font-size:0;background:var(--star) center/contain no-repeat}
+.info{display:flex;flex:1;flex-direction:column;gap:2px;padding:12px}
+.name{font-size:14px;font-weight:600;line-height:1.4;min-height:2.8em;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;overflow-wrap:anywhere}
+.muted{font-size:12px;color:var(--muted)}
+.price{font-size:20px;font-weight:800;letter-spacing:-.02em;color:var(--brand);font-variant-numeric:tabular-nums;margin:6px 0 2px}
+.stock{font-size:12px;font-weight:600;color:var(--warn)}
+.product-actions{display:grid;gap:8px;margin-top:auto;padding-top:10px}
+.add,.submit{background:var(--brand);color:#fff;width:100%;min-height:44px}
+.add:hover:not(:disabled),.submit:hover:not(:disabled){background:var(--brand-hi)}
+.product-actions .add{order:-1}
+.details-btn{background:transparent;color:var(--brand);border:1px solid var(--line);min-height:40px;padding:8px 12px;font-size:14px}
+.details-btn:hover{background:var(--brand-soft);border-color:#b4c8bd}
+.sk-line{height:12px;border-radius:6px;background:#e7ede9;margin-top:10px}
+.sk-line.short{width:55%}
+.skel .photo,.skel .sk-line{background:linear-gradient(90deg,#e7ede9 25%,#f2f6f3 40%,#e7ede9 60%) 0 0/300% 100%;animation:shimmer 1.4s linear infinite}
+@keyframes shimmer{to{background-position:-300% 0}}
+
+/* Product page */
+.product-detail{margin:0 0 28px}
+.close-detail{background:transparent;color:var(--brand);padding:8px 0;margin-bottom:8px}
+.close-detail:hover{text-decoration:underline}
+.detail-card{display:grid;gap:20px;background:var(--paper);border:1px solid var(--line);border-radius:var(--r-m);padding:16px}
+.detail-photo{aspect-ratio:1/1;display:grid;place-items:center;padding:20px;background:#fff;border:1px solid #edf1ee;border-radius:var(--r-s);overflow:hidden}
+.detail-photo img{display:block;width:100%;height:100%;object-fit:contain}
+.detail-kicker{display:none}
+.detail-info h2{font-size:clamp(22px,3vw,28px);line-height:1.25;letter-spacing:-.02em;margin-bottom:8px;overflow-wrap:anywhere}
+.detail-price{font-size:30px;font-weight:800;letter-spacing:-.02em;color:var(--brand);font-variant-numeric:tabular-nums}
+.detail-info h3{font-size:15px;margin:24px 0 6px}
+.detail-copy{line-height:1.8;white-space:pre-line;color:#2b3d35;max-width:62ch}
 .detail-description{display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:3;overflow:hidden}
 .detail-description.expanded{display:block;overflow:visible}
-.read-more{display:inline-block;background:transparent;color:var(--forest);border:0;padding:5px 0;margin:5px 0 0;font-weight:800;text-decoration:underline}
-.detail-specs{font-size:13px;color:var(--muted);line-height:1.7}
-.detail-add{max-width:320px}
-.product-actions{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:auto}
-.product-actions button{width:100%;min-height:44px;margin:0;padding:10px 7px;font-size:13px}
-.details-btn{background:#fff8ec;color:var(--forest);border:1px solid #d9c8a9}
-.details-btn:hover{background:#f3eadb}
-.detail-photo{width:100%;min-height:280px;overflow:hidden}
-.detail-photo img{display:block;width:100%;height:100%;object-fit:contain}
-@media(max-width:520px){.product-actions{gap:6px}.product-actions button{font-size:11px;padding:9px 4px;min-height:42px}}
-@media(max-width:650px){.detail-card{grid-template-columns:1fr;padding:13px}.detail-photo{min-height:220px}.detail-info{padding:4px}}
+.read-more{background:transparent;color:var(--brand);padding:6px 0;text-decoration:underline;font-weight:600}
+.detail-specs{font-size:13px;color:var(--muted);line-height:1.7;margin-top:12px}
+.detail-add{margin-top:20px}
+@media(max-width:859px){.detail-add{position:sticky;bottom:12px;box-shadow:0 6px 18px #0a342740}}
+@media(min-width:860px){
+  .detail-card{grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:40px;padding:28px}
+  .detail-photo{position:sticky;top:96px;align-self:start}
+  .detail-add{max-width:360px}
+}
+
+/* Cart and checkout */
+.overlay{display:none;position:fixed;inset:0;z-index:50;background:#0a1e18a6;align-items:flex-end;justify-content:center}
+.overlay.open{display:flex}
+.panel{width:100%;max-height:92vh;overflow:auto;background:#fff;border-radius:18px 18px 0 0;padding:0 20px 24px}
+.overlay.open .panel{animation:panel-in .22s ease-out}
+@keyframes panel-in{from{transform:translateY(24px);opacity:0}}
+@media(min-width:760px){
+  .overlay{align-items:stretch;justify-content:flex-end}
+  .panel{width:min(460px,100%);max-height:none;height:100%;border-radius:0}
+  .overlay.open .panel{animation-name:panel-side}
+  [dir="rtl"] .overlay.open .panel{animation-name:panel-side-rtl}
+  @keyframes panel-side{from{transform:translateX(32px);opacity:0}}
+  @keyframes panel-side-rtl{from{transform:translateX(-32px);opacity:0}}
+}
+.head{position:sticky;top:0;z-index:1;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:16px 0 12px;background:#fff;border-bottom:1px solid var(--line)}
+.head h2{font-size:20px;letter-spacing:-.01em}
+.close{background:var(--brand-soft);color:var(--brand);padding:8px 14px}
+.close:hover{background:#d3e4db}
+.empty{padding:28px 0;text-align:center;color:var(--muted)}
+.line{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:12px;align-items:center;padding:14px 0;border-bottom:1px solid var(--line)}
+.line-name{font-weight:600;font-size:14px;line-height:1.4;overflow-wrap:anywhere}
+.line-side{display:grid;justify-items:end;gap:6px}
+.line-side strong{font-variant-numeric:tabular-nums}
+.stepper{display:flex;align-items:center;border:1px solid #c9d4ce;border-radius:var(--r-s);overflow:hidden}
+.stepper button{width:36px;height:36px;padding:0;border-radius:0;background:#fff;font-size:18px;line-height:1}
+.stepper button:hover{background:var(--brand-soft)}
+.stepper span{min-width:32px;text-align:center;font-weight:600;font-variant-numeric:tabular-nums}
+#subtotal{display:flex;justify-content:space-between;gap:12px;font-size:18px;margin:16px 0 8px}
+.field{display:grid;gap:6px;margin:14px 0}
+.field label{font-size:13px;font-weight:600}
+.field input,.field textarea{width:100%;border:1px solid #c9d4ce;border-radius:var(--r-s);background:#fff;padding:0 12px;min-height:46px}
+.field textarea{padding:10px 12px;min-height:84px;resize:vertical}
+.field input:focus,.field textarea:focus{border-color:var(--brand-hi);outline:2px solid var(--brand-hi);outline-offset:0}
+.small{font-size:13px;color:var(--muted);line-height:1.55;margin:10px 0}
+.error,.success{display:none;white-space:pre-wrap;padding:12px 14px;border-radius:var(--r-s);margin:12px 0;font-size:14px}
+.error{background:var(--danger-bg);color:var(--danger);border:1px solid #f0c4c0}
+.success{background:var(--ok-bg);color:var(--ok);border:1px solid #bfdfca}
+
+/* Footer */
+footer{background:var(--brand-ink);color:#dbe6e0;padding:28px 16px;display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:6px 14px;font-size:14px;text-align:center}
+footer svg{width:20px;height:20px;color:var(--saffron)}
+footer a{color:inherit;text-decoration:underline;text-underline-offset:3px}
+footer a:hover{color:#fff}
+
+@media(prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation:none!important;transition:none!important}
+}
 </style>
 </head>
 
 <body>
-<div class="top-strip" id="topStrip">Livraison partout au Maroc · Paiement à la livraison</div>
 <header>
-<div class="logo">Souq<span>Nova</span></div>
-<div class="head-actions"><input id="search" class="header-search" type="search" placeholder="Rechercher un produit..." aria-label="Rechercher un produit"><button class="langbtn" id="langToggle" type="button">العربية</button><button class="cartbtn" id="open" type="button" aria-haspopup="dialog">Panier (<b id="count">0</b>)</button></div>
+<a class="logo" href="./" aria-label="SouqNova"><svg viewBox="0 0 64 64" aria-hidden="true"><polygon fill="currentColor" points="32.0,2.0 38.9,15.4 53.2,10.8 48.6,25.1 62.0,32.0 48.6,38.9 53.2,53.2 38.9,48.6 32.0,62.0 25.1,48.6 10.8,53.2 15.4,38.9 2.0,32.0 15.4,25.1 10.8,10.8 25.1,15.4"/></svg><div>Souq<span>Nova</span></div></a>
+<input id="search" class="header-search" type="search" placeholder="Rechercher un produit..." aria-label="Rechercher un produit">
+<div class="head-actions">
+<button class="langbtn" id="langToggle" type="button">العربية</button>
+<button class="cartbtn" id="open" type="button" aria-haspopup="dialog"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 7h12l-1 13H7L6 7z"/><path d="M9 7a3 3 0 016 0"/></svg><span id="cartLabel">Panier</span><b id="count">0</b></button>
+</div>
 </header>
+
+<section class="trust" aria-label="Informations de commande">
+<ul>
+<li><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="6" width="18" height="12" rx="2"/><circle cx="12" cy="12" r="2.5"/></svg><div><b id="t1">Paiement à la livraison</b><small id="t1s">Vous payez à la réception</small></div></li>
+<li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 7h11v9H3z"/><path d="M14 10h4l3 3v3h-7z"/><circle cx="7" cy="17.5" r="1.8"/><circle cx="17" cy="17.5" r="1.8"/></svg><div><b id="t2">Livraison partout au Maroc</b><small id="t2s">20 DH à Casablanca, 30 DH ailleurs</small></div></li>
+<li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l8 3v6c0 4.5-3.2 7.8-8 9-4.8-1.2-8-4.5-8-9V6z"/><path d="M8.5 12l2.5 2.5 4.5-5"/></svg><div><b id="t3">Prix vérifié avant l’envoi</b><small id="t3s">Le total est confirmé avant la commande</small></div></li>
+</ul>
+</section>
 
 <main>
 <section id="productDetail" class="product-detail" hidden aria-live="polite">
@@ -196,12 +256,17 @@ footer{background:#102f29;color:#e7eee8;padding:28px 16px}footer a{color:inherit
 </section>
 
 <noscript><div class="notice">Veuillez activer JavaScript pour afficher les produits. · يرجى تفعيل JavaScript لعرض المنتجات.</div></noscript>
-<div id="status" class="notice">Chargement...</div>
+<div class="toolbar" id="toolbar">
+<span class="count" id="resultCount" role="status"></span>
+<label class="sort"><span id="sortLabel">Trier par</span>
+<select id="sort"><option value="default"></option><option value="asc"></option><option value="desc"></option></select></label>
+</div>
+<div id="status" class="notice" role="status" hidden>Chargement...</div>
 <div id="products" class="grid"></div>
 
 </main>
 
-<footer><span id="footerText">SouqNova · Paiement à la livraison</span> · <a id="policyLink" href="infos.html">Livraison et confidentialité</a></footer>
+<footer><svg viewBox="0 0 64 64" aria-hidden="true"><polygon fill="currentColor" points="32.0,2.0 38.9,15.4 53.2,10.8 48.6,25.1 62.0,32.0 48.6,38.9 53.2,53.2 38.9,48.6 32.0,62.0 25.1,48.6 10.8,53.2 15.4,38.9 2.0,32.0 15.4,25.1 10.8,10.8 25.1,15.4"/></svg><span id="footerText">SouqNova · Paiement à la livraison</span><a id="policyLink" href="infos.html">Livraison et confidentialité</a></footer>
 
 <div class="overlay" id="overlay">
 <section class="panel" role="dialog" aria-modal="true" aria-labelledby="cartTitle">
@@ -264,6 +329,8 @@ let products=[];
 let pending=null;
 let openedProduct=null;
 let sending=false;
+let sortMode="default";
+let catalogLoading=false;
 let orderDone=false;
 let turnstileWidget=null;
 // Cloudflare Turnstile (anti-spam). Laisser vide pour le désactiver ;
@@ -276,6 +343,15 @@ const shippingFee=city=>CASA_RE.test(String(city||""))?20:30;
 const round2=n=>Math.round(n*100)/100;
 
 const $=id=>document.getElementById(id);
+const countLabel=n=>currentLang==="ar"?n+" منتج":n+" produit"+(n>1?"s":"");
+function skeleton(n){
+  $("products").innerHTML=Array(n).fill('<div class="card skel" aria-hidden="true"><div class="photo"></div><div class="info"><div class="sk-line"></div><div class="sk-line short"></div></div></div>').join("");
+}
+function flash(btn){
+  btn.textContent=tr("added")+" ✓";
+  clearTimeout(btn._t);
+  btn._t=setTimeout(()=>{btn.textContent=tr("add");},1200);
+}
 const money=n=>Number(n).toFixed(2).replace(/\.00$/,"")+" DH";
 
 function imgUrl(v){
@@ -322,9 +398,9 @@ async function load(){
   const status = $("status");
   const grid = $("products");
 
-  status.style.display = "block";
-  status.textContent = tr("loading");
-  grid.innerHTML = "";
+  status.style.display = "none";
+  catalogLoading = true;
+  skeleton(8);
 
   try {
     let allProducts = [];
@@ -373,8 +449,6 @@ async function load(){
       if (pages === 0) {
         products = normalizeProducts(allProducts);
         draw();
-        status.style.display = "block";
-        status.textContent = tr("loadingMore");
       }
 
       const pagination = data.pagination || data.data?.pagination || {};
@@ -392,11 +466,8 @@ async function load(){
 
     products = normalizeProducts(allProducts);
     refreshCategories();
+    catalogLoading = false;
     draw();
-
-    status.style.display = "block";
-    status.textContent =
-      products.length + tr("loaded");
 
     if (location.hash.startsWith("#product=")) {
       let wanted = "";
@@ -406,6 +477,9 @@ async function load(){
     }
 
   } catch (error) {
+    catalogLoading = false;
+    if (!products.length) grid.innerHTML = "";
+    status.hidden = false;
     status.style.display = "block";
     status.textContent =
       tr("loadError") + error.message;
@@ -437,7 +511,10 @@ const sku=String(p.sku||"").toLowerCase();
 return name.includes(term)||sku.includes(term);
 });
 
-list.sort((a,b)=>a.price-b.price);
+if(sortMode==="asc") list.sort((a,b)=>a.price-b.price);
+else if(sortMode==="desc") list.sort((a,b)=>b.price-a.price);
+
+$("resultCount").textContent=countLabel(list.length)+(catalogLoading?" · "+tr("loadingMore"):"");
 
 $("products").innerHTML="";
 
@@ -486,6 +563,13 @@ let pr=document.createElement("div");
 pr.className="price";
 pr.textContent=money(p.price);
 
+let stock=null;
+if(p.stock>0&&p.stock<=5){
+stock=document.createElement("div");
+stock.className="stock";
+stock.textContent=tr("lowStock").replace("{n}",p.stock);
+}
+
 let details=document.createElement("button");
 details.className="details-btn";
 details.textContent=tr("details");
@@ -495,13 +579,13 @@ let b=document.createElement("button");
 b.className="add";
 b.textContent=tr("add");
 b.disabled=!(p.stock>0 && p.sku && p.price>0);
-if(b.disabled){b.textContent=tr("unavailable");b.style.opacity=".55";b.style.cursor="not-allowed";}
-b.onclick=()=>{if(!b.disabled)add(p);};
+if(b.disabled){b.textContent=tr("unavailable");}
+b.onclick=()=>{if(!b.disabled){add(p);flash(b);}};
 
 let actions=document.createElement("div");
 actions.className="product-actions";
 actions.append(details,b);
-inf.append(n,ref,pr,actions);
+inf.append(...[n,ref,pr,stock,actions].filter(Boolean));
 c.append(ph,inf);
 
 $("products").append(c);
@@ -532,6 +616,7 @@ function openProduct(p,fromUrl){
   const description=productField(p,["description_ar","arabic_description","description","short_description","product_description"]);
   const usage=productField(p,["usage_ar","how_to_use_ar","usage_instructions","instructions","how_to_use"]);
   $("products").hidden=true;
+  $("toolbar").hidden=true;
   $("status").hidden=true;
   $("productDetail").hidden=false;
   $("detailName").textContent=p.name;
@@ -568,8 +653,8 @@ function openProduct(p,fromUrl){
   }
   $("detailAdd").textContent=tr("add");
   $("detailAdd").disabled=!(p.stock>0 && p.sku && p.price>0);
-  if($("detailAdd").disabled){$("detailAdd").textContent=tr("unavailable");$("detailAdd").style.opacity=".55";}
-  $("detailAdd").onclick=()=>{if(!$("detailAdd").disabled)add(p);};
+  if($("detailAdd").disabled){$("detailAdd").textContent=tr("unavailable");}
+  $("detailAdd").onclick=()=>{if(!$("detailAdd").disabled){add(p);flash($("detailAdd"));}};
   document.title=p.name+" | SouqNova";
   if(!fromUrl) history.pushState({product:p.sku},"","#product="+encodeURIComponent(p.sku));
   window.scrollTo({top:0,behavior:"instant"});
@@ -578,6 +663,7 @@ function openProduct(p,fromUrl){
 function closeProduct(){
   $("productDetail").hidden=true;
   $("products").hidden=false;
+  $("toolbar").hidden=false;
   $("status").hidden=false;
   openedProduct=null;
   document.title=tr("seoTitle");
@@ -588,6 +674,7 @@ window.addEventListener("popstate",()=>{
   if(openedProduct){
     $("productDetail").hidden=true;
     $("products").hidden=false;
+  $("toolbar").hidden=false;
     $("status").hidden=false;
     openedProduct=null;
     document.title=tr("seoTitle");
@@ -612,6 +699,10 @@ if(x)x.qty++;
 else cart.set(p.sku,{...p,qty:1});
 
 update();
+const badge=$("count");
+badge.classList.remove("bump");
+void badge.offsetWidth;
+badge.classList.add("bump");
 }
 
 function update(){
@@ -623,6 +714,13 @@ $("cart").innerHTML="";
 
 let total=0;
 
+if(!cart.size){
+let empty=document.createElement("p");
+empty.className="empty";
+empty.textContent=tr("emptyCart");
+$("cart").append(empty);
+}
+
 cart.forEach(p=>{
 
 total+=p.price*p.qty;
@@ -630,21 +728,43 @@ total+=p.price*p.qty;
 let row=document.createElement("div");
 row.className="line";
 
-let label=document.createElement("span");
-label.textContent=`${p.name} · ${money(p.price)} × ${p.qty}`;
+let info=document.createElement("div");
+let nm=document.createElement("div");
+nm.className="line-name";
+nm.textContent=p.name;
+let unit=document.createElement("div");
+unit.className="muted";
+unit.textContent=money(p.price)+" × "+p.qty;
+info.append(nm,unit);
 
-let ctr=document.createElement("span");
+let side=document.createElement("div");
+side.className="line-side";
+
+let ctr=document.createElement("div");
+ctr.className="stepper";
 
 let minus=document.createElement("button");
+minus.type="button";
 minus.textContent="−";
+minus.setAttribute("aria-label",tr("less")+" : "+p.name);
 minus.onclick=()=>qty(p.sku,-1);
 
+let amount=document.createElement("span");
+amount.textContent=p.qty;
+
 let plus=document.createElement("button");
+plus.type="button";
 plus.textContent="+";
+plus.setAttribute("aria-label",tr("more")+" : "+p.name);
 plus.onclick=()=>qty(p.sku,1);
 
-ctr.append(minus,plus);
-row.append(label,ctr);
+ctr.append(minus,amount,plus);
+
+let lineTotal=document.createElement("strong");
+lineTotal.textContent=money(p.price*p.qty);
+
+side.append(ctr,lineTotal);
+row.append(info,side);
 
 $("cart").append(row);
 
@@ -682,6 +802,7 @@ if(e.key==="Escape"&&$("overlay").classList.contains("open"))closeCart();
 $("form").addEventListener("input",invalidatePending);
 
 $("search").oninput=draw;
+$("sort").onchange=e=>{sortMode=e.target.value;draw();};
 
 async function post(path,data){
 
@@ -910,8 +1031,12 @@ const translations = {
     hero:"", heroText:"Une sélection de produits avec paiement à la livraison partout au Maroc.",
     search:"Rechercher un produit...", allCategories:"Toutes les catégories", sort:"Tri par défaut", asc:"Prix croissant", desc:"Prix décroissant",
     cart:"Votre panier", close:"Fermer", name:"Nom complet", phone:"Téléphone marocain",
-    city:"Ville (ex. : Rabat)", address:"Adresse détaillée", notes:"Notes (facultatif)", footer:"SouqNova · Paiement à la livraison",
-    langButton:"العربية", send:"Vérifier le prix", policyLink:"Livraison et confidentialité"
+    city:"Ville", address:"Adresse détaillée", notes:"Notes (facultatif)", footer:"SouqNova · Paiement à la livraison",
+    langButton:"العربية", send:"Vérifier le prix", policyLink:"Livraison et confidentialité",
+    cartShort:"Panier", sortBy:"Trier par", added:"Ajouté", lowStock:"Plus que {n} en stock", less:"Retirer une unité", more:"Ajouter une unité",
+    t1:"Paiement à la livraison", t1s:"Vous payez à la réception",
+    t2:"Livraison partout au Maroc", t2s:"20 DH à Casablanca, 30 DH ailleurs",
+    t3:"Prix vérifié avant l’envoi", t3s:"Le total est confirmé avant la commande"
   },
   ar: {
     seoTitle:"SouqNova | متجر إلكتروني بالمغرب", details:"تفاصيل المنتج", description:"وصف المنتج", readMore:"اقرأ المزيد...", readLess:"اقرأ أقل", usage:"طريقة الاستعمال", descriptionUnavailable:"الوصف العربي المفصل غير متوفر لهذا المنتج حالياً.", usageUnavailable:"يرجى اتباع تعليمات الشركة المصنعة الموجودة على العبوة. لا تتوفر تعليمات استعمال إضافية.", back:"العودة إلى المنتجات", available:"متوفر", unavailable:"غير متوفر", loading:"جارٍ تحميل المنتجات...", loadingMore:"جارٍ تحميل باقي المنتجات...", loaded:" منتج تم تحميله", loadError:"تعذر تحميل المنتجات: ",
@@ -929,8 +1054,12 @@ const translations = {
     hero:"اكتشف منتجات تستحق أن تكون من اختياراتك المفضلة.", heroText:"تشكيلة من المنتجات مع الدفع عند الاستلام في جميع أنحاء المغرب.",
     search:"ابحث عن منتج...", allCategories:"جميع الفئات", sort:"الترتيب الافتراضي", asc:"السعر من الأقل إلى الأعلى", desc:"السعر من الأعلى إلى الأقل",
     cart:"سلة المشتريات", close:"إغلاق", name:"الاسم الكامل", phone:"رقم الهاتف المغربي",
-    city:"المدينة (مثال: الرباط)", address:"العنوان بالتفصيل", notes:"ملاحظات (اختياري)", footer:"SouqNova · الدفع عند الاستلام",
-    langButton:"Français", send:"تحقق من السعر", policyLink:"التوصيل والخصوصية"
+    city:"المدينة", address:"العنوان بالتفصيل", notes:"ملاحظات (اختياري)", footer:"SouqNova · الدفع عند الاستلام",
+    langButton:"Français", send:"تحقق من السعر", policyLink:"التوصيل والخصوصية",
+    cartShort:"السلة", sortBy:"ترتيب حسب", added:"تمت الإضافة", lowStock:"بقي {n} فقط في المخزون", less:"إنقاص الكمية", more:"زيادة الكمية",
+    t1:"الدفع عند الاستلام", t1s:"تدفع عند وصول طلبك",
+    t2:"التوصيل لجميع أنحاء المغرب", t2s:"20 درهماً للدار البيضاء و30 لباقي المدن",
+    t3:"السعر مؤكد قبل الإرسال", t3s:"يظهر المبلغ الإجمالي قبل تأكيد الطلب"
   }
 };
 function tr(key){ return translations[currentLang]?.[key] ?? translations.fr[key] ?? key; }
@@ -939,7 +1068,11 @@ function setLanguage(lang){
   localStorage.setItem("souqnova_lang", currentLang);
   document.documentElement.lang = currentLang;
   document.documentElement.dir = currentLang === "ar" ? "rtl" : "ltr";
-  $("topStrip").textContent = tr("top");
+  $("cartLabel").textContent = tr("cartShort");
+  $("open").setAttribute("aria-label", tr("cartShort"));
+  $("sortLabel").textContent = tr("sortBy");
+  [["default","sort"],["asc","asc"],["desc","desc"]].forEach(([v,k])=>{$("sort").querySelector('option[value="'+v+'"]').textContent=tr(k);});
+  ["t1","t1s","t2","t2s","t3","t3s"].forEach(k=>{$(k).textContent=tr(k);});
   $("backLabel").textContent = tr("back");
   $("search").placeholder = tr("search");
   $("cartTitle").textContent = tr("cart");
