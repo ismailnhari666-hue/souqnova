@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="fr" dir="ltr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Livraison, paiement et confidentialité | SouqNova</title>
+<meta name="description" content="Informations SouqNova : livraison partout au Maroc, paiement à la livraison et traitement de vos données personnelles.">
+<link rel="canonical" href="https://ismailnhari666-hue.github.io/souqnova/infos.html">
+<meta name="robots" content="index, follow">
+<meta name="theme-color" content="#173f35">
+<style>
+*{box-sizing:border-box}
+body{margin:0;background:#fbf7ef;color:#25332d;font-family:Arial,"Noto Sans Arabic",sans-serif;line-height:1.75}
+header{background:#173f35;color:#fff;padding:16px max(5%,calc((100% - 860px)/2));display:flex;justify-content:space-between;align-items:center;gap:10px}
+.logo{font-size:26px;font-weight:900;letter-spacing:-1px;color:#fff;text-decoration:none}
+.logo span{color:#e8bd65}
+button{border:1px solid #e9ddc9;border-radius:12px;padding:10px 14px;font-weight:bold;cursor:pointer;background:#fff8ec;color:#173f35;font:inherit}
+button:focus-visible,a:focus-visible{outline:3px solid #e8bd65;outline-offset:2px}
+main{max-width:860px;margin:0 auto;padding:28px 18px 48px}
+h1{color:#173f35;font-size:clamp(24px,4vw,32px);line-height:1.3;margin:0 0 8px}
+h2{color:#173f35;font-size:19px;margin:28px 0 6px}
+p,li{margin:6px 0}
+ul{padding-inline-start:22px}
+a{color:#173f35}
+.back{display:inline-block;margin-bottom:14px}
+footer{background:#102f29;color:#e7eee8;text-align:center;padding:24px 16px}
+footer a{color:inherit}
+[lang="fr"] .ar,[lang="ar"] .fr{display:none}
+[dir="rtl"] body{text-align:right}
+</style>
+</head>
+<body>
+<header>
+<a class="logo" href="./">Souq<span>Nova</span></a>
+<button type="button" id="langToggle">العربية</button>
+</header>
+
+<main>
+<a class="back" href="./"><span class="fr">← Retour à la boutique</span><span class="ar">← العودة إلى المتجر</span></a>
+
+<section class="fr">
+<h1>Livraison, paiement et confidentialité</h1>
+
+<h2>Livraison</h2>
+<p>Nous livrons partout au Maroc. Les frais de livraison sont de 20 DH pour Casablanca et de 30 DH pour les autres villes, facturés une seule fois par commande.</p>
+
+<h2>Paiement</h2>
+<ul>
+<li>Le paiement se fait à la livraison, en espèces. Aucun paiement en ligne n’est demandé sur ce site.</li>
+<li>Avant l’envoi de votre commande, le site vérifie le prix et affiche le total à payer, frais de livraison inclus. Votre commande n’est envoyée qu’après votre confirmation.</li>
+</ul>
+
+<h2>Données personnelles</h2>
+<p>Pour traiter votre commande, nous vous demandons votre nom, votre numéro de téléphone, votre ville, votre adresse et, si vous le souhaitez, une note.</p>
+<ul>
+<li>Ces informations servent uniquement à préparer, livrer et confirmer votre commande.</li>
+<li>Elles sont transmises à notre fournisseur, qui prépare et expédie la commande, ainsi qu’au service de livraison.</li>
+<li>Nous ne vous demandons aucune donnée de carte bancaire.</li>
+<li>Votre choix de langue est conservé dans votre navigateur (stockage local) pour la prochaine visite.</li>
+</ul>
+</section>
+
+<section class="ar">
+<h1>التوصيل والدفع والخصوصية</h1>
+
+<h2>التوصيل</h2>
+<p>نوصّل إلى جميع أنحاء المغرب. تكلفة التوصيل 20 درهماً للدار البيضاء و30 درهماً لباقي المدن، وتُحتسب مرة واحدة لكل طلب.</p>
+
+<h2>الدفع</h2>
+<ul>
+<li>الدفع عند الاستلام نقداً. لا يُطلب أي دفع إلكتروني في هذا الموقع.</li>
+<li>قبل إرسال طلبك، يتحقق الموقع من السعر ويعرض المبلغ الإجمالي المطلوب، شاملاً تكلفة التوصيل. لا يُرسل الطلب إلا بعد تأكيدك.</li>
+</ul>
+
+<h2>المعطيات الشخصية</h2>
+<p>لمعالجة طلبك نطلب منك الاسم ورقم الهاتف والمدينة والعنوان، وملاحظة إن رغبت في ذلك.</p>
+<ul>
+<li>تُستعمل هذه المعلومات فقط لتحضير الطلب وتوصيله وتأكيده.</li>
+<li>تُرسل إلى المورد الذي يحضّر الطلب ويشحنه، وإلى خدمة التوصيل.</li>
+<li>لا نطلب منك أي معطيات بطاقة بنكية.</li>
+<li>يُحفظ اختيار اللغة في متصفحك (التخزين المحلي) للزيارة القادمة.</li>
+</ul>
+</section>
+</main>
+
+<footer><a href="./">SouqNova</a></footer>
+
+<script>
+(function(){
+  var lang="fr";
+  try{lang=localStorage.getItem("souqnova_lang")==="ar"?"ar":"fr";}catch(e){}
+  function set(l){
+    lang=l;
+    document.documentElement.lang=l;
+    document.documentElement.dir=l==="ar"?"rtl":"ltr";
+    document.getElementById("langToggle").textContent=l==="ar"?"Français":"العربية";
+    document.title=l==="ar"?"التوصيل والدفع والخصوصية | SouqNova":"Livraison, paiement et confidentialité | SouqNova";
+    try{localStorage.setItem("souqnova_lang",l);}catch(e){}
+  }
+  document.getElementById("langToggle").addEventListener("click",function(){set(lang==="fr"?"ar":"fr");});
+  set(lang);
+})();
+</script>
+</body>
+</html>
