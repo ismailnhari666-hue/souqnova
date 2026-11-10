@@ -1,3 +1,6 @@
 name = "souqnova-api"
 main = "worker.js"
 compatibility_date = "2026-10-30"
+
+[observability]
+enabled = true

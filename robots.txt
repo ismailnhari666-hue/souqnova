@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://ismailnhari666-hue.github.io/souqnova/sitemap.xml

@@ -48,9 +48,6 @@ header{background:#123c31;color:white;padding:18px 5%;display:flex;justify-conte
 .logo span{color:#c8f169}
 button{border:0;border-radius:10px;padding:12px 16px;font-weight:bold;cursor:pointer}
 .cartbtn{background:#c8f169}
-.hero{background:#174635;color:white;padding:45px 5%}
-.hero h1{font-size:clamp(30px,5vw,52px);margin:0 0 10px}
-.hero p{line-height:1.6}
 main{max-width:1150px;margin:28px auto;padding:0 16px}
 .bar{display:flex;gap:10px;margin-bottom:18px}
 .bar input,.bar select,.field input,.field textarea{padding:13px;border:1px solid #dfe7df;border-radius:9px;font:inherit;background:white}
@@ -92,13 +89,9 @@ header{background:var(--forest);padding:16px max(5%,calc((100% - 1180px)/2));box
 .logo{font-size:28px;letter-spacing:-1px}.logo span{color:var(--gold)}
 button{border-radius:12px;transition:transform .18s,background .18s}
 button:active{transform:scale(.98)}
+button:focus-visible,a:focus-visible{outline:3px solid #e8bd65;outline-offset:2px}
 .cartbtn{background:var(--coral);color:white;padding:12px 17px}
 .langbtn{background:#fff8ec;color:var(--forest);border:1px solid #e9ddc9}
-.hero{position:relative;overflow:hidden;background:linear-gradient(112deg,#173f35 0%,#245748 62%,#356b57 100%);padding:20px max(5%,calc((100% - 1180px)/2)) 22px;color:#fffaf0}
-.hero:after{content:"";position:absolute;width:290px;height:290px;border:1px solid #ffffff20;border-radius:50%;right:7%;top:-135px;box-shadow:0 0 0 35px #ffffff08,0 0 0 75px #ffffff06;pointer-events:none}
-.hero h1{max-width:700px;font-size:clamp(22px,3vw,30px);line-height:1.2;letter-spacing:-.4px;margin:0 0 5px}
-.hero h1{color:var(--gold);font-weight:900;text-align:right;text-shadow:0 1px 1px #0002}
-.hero p{max-width:700px;color:#e5eee7;font-size:16px;font-weight:300;line-height:1.9;margin:0;text-align:right}
 main{max-width:1180px;margin:0 auto;padding:30px 18px 48px}
 .bar{background:#fff;border:1px solid #eee5d8;border-radius:16px;padding:12px;margin-bottom:22px;box-shadow:0 5px 20px #4b39200a}
 .bar input,.bar select,.field input,.field textarea{border:1px solid #e9e1d5;border-radius:11px;background:#fffdf9;min-height:46px}
@@ -119,8 +112,7 @@ footer{background:#102f29;color:#e7eee8;padding:28px 16px}
 .panel{background:var(--cream)}
 .close{background:#eee6da;color:var(--forest)}
 .error{background:#fff0eb;color:#a43c25}.success{background:#edf6eb;color:#285d3e}
-[dir="rtl"] .hero:after{right:auto;left:7%}
-@media(max-width:520px){.hero{padding:15px 20px 17px}.hero h1{font-size:23px}.hero p{font-size:14px}.bar{padding:9px;gap:7px}.bar select{max-width:43%;font-size:12px}.grid{gap:10px}.photo{height:145px}.info{padding:10px}.add{font-size:12px}}
+@media(max-width:520px){.bar{padding:9px;gap:7px}.bar select{max-width:43%;font-size:12px}.grid{gap:10px}.photo{height:145px}.info{padding:10px}.add{font-size:12px}}
 
 
 /* Product presentation polish */
@@ -176,7 +168,7 @@ footer{background:#102f29;color:#e7eee8;padding:28px 16px}
 <div class="top-strip" id="topStrip">Livraison partout au Maroc · Paiement à la livraison</div>
 <header>
 <div class="logo">Souq<span>Nova</span></div>
-<div class="head-actions"><input id="search" class="header-search" type="search" placeholder="Rechercher un produit..." aria-label="Rechercher un produit"><button class="langbtn" id="langToggle" type="button">العربية</button><button class="cartbtn" id="open">Panier (<b id="count">0</b>)</button></div>
+<div class="head-actions"><input id="search" class="header-search" type="search" placeholder="Rechercher un produit..." aria-label="Rechercher un produit"><button class="langbtn" id="langToggle" type="button">العربية</button><button class="cartbtn" id="open" type="button" aria-haspopup="dialog">Panier (<b id="count">0</b>)</button></div>
 </header>
 
 <main>
@@ -207,11 +199,11 @@ footer{background:#102f29;color:#e7eee8;padding:28px 16px}
 <footer id="footerText">SouqNova · Paiement à la livraison</footer>
 
 <div class="overlay" id="overlay">
-<section class="panel">
+<section class="panel" role="dialog" aria-modal="true" aria-labelledby="cartTitle">
 
 <div class="head">
 <h2 id="cartTitle">Votre panier</h2>
-<button class="close" id="close">Fermer</button>
+<button class="close" id="close" type="button">Fermer</button>
 </div>
 
 <div id="cart"></div>
@@ -220,42 +212,41 @@ footer{background:#102f29;color:#e7eee8;padding:28px 16px}
 <form id="form">
 
 <div class="field">
-<label id="nameLabel">Nom complet</label>
-<input name="customer_name" required>
+<label id="nameLabel" for="f_name">Nom complet</label>
+<input id="f_name" name="customer_name" required maxlength="100" autocomplete="name">
 </div>
 
 <div class="field">
-<label id="phoneLabel">Téléphone marocain</label>
-<input name="customer_phone" required inputmode="tel" maxlength="10" placeholder="0612345678">
+<label id="phoneLabel" for="f_phone">Téléphone marocain</label>
+<input id="f_phone" name="customer_phone" required inputmode="tel" maxlength="10" placeholder="0612345678" autocomplete="tel-national">
 </div>
 
 <div class="field">
-<label id="cityLabel">Ville</label>
-<input name="city" required placeholder="Ex. : Rabat, Salé, Casablanca">
+<label id="cityLabel" for="f_city">Ville</label>
+<input id="f_city" name="city" required maxlength="60" list="cityList" autocomplete="address-level2" placeholder="Ex. : Rabat, Salé, Casablanca">
+<datalist id="cityList"></datalist>
 </div>
 
 <div class="field">
-<label id="addressLabel">Adresse détaillée</label>
-<textarea name="address" required></textarea>
+<label id="addressLabel" for="f_address">Adresse détaillée</label>
+<textarea id="f_address" name="address" required maxlength="300" autocomplete="street-address"></textarea>
 </div>
 
 <div class="field">
-<label id="notesLabel">ملاحظات (اختياري)</label>
-<textarea name="notes"></textarea>
+<label id="notesLabel" for="f_notes">Notes (facultatif)</label>
+<textarea id="f_notes" name="notes" maxlength="500"></textarea>
 </div>
 
-<p class="small">
-الشحن: 20 DH للدار البيضاء و30 DH لباقي المدن، مرة واحدة للطلب.
-</p>
+<p class="small" id="shipNote"></p>
 
-<div id="err" class="error"></div>
-<div id="ok" class="success"></div>
+<div id="turnstile"></div>
 
-<button class="submit" id="send">Vérifier le prix</button>
+<div id="err" class="error" role="alert"></div>
+<div id="ok" class="success" role="status"></div>
 
-<p class="small">
-أول ضغطة تتحقق من السعر فقط. الضغطة الثانية ترسل الطلب فعلياً للمورد.
-</p>
+<button class="submit" id="send" type="submit">Vérifier le prix</button>
+
+<p class="small" id="stepNote"></p>
 
 </form>
 </section>
@@ -267,6 +258,17 @@ const cart=new Map();
 let products=[];
 let pending=null;
 let openedProduct=null;
+let sending=false;
+let orderDone=false;
+let turnstileWidget=null;
+// Cloudflare Turnstile (anti-spam). Laisser vide pour le désactiver ;
+// renseigner la "site key" ET le secret TURNSTILE_SECRET côté Worker pour l'activer.
+const TURNSTILE_SITE_KEY="";
+
+// Même règle que dans worker.js (le Worker recalcule de toute façon).
+const CASA_RE=/casablanca|\bcasa\b|dar el beida|dar el-beida|الدار البيضاء|الدارالبيضاء/i;
+const shippingFee=city=>CASA_RE.test(String(city||""))?20:30;
+const round2=n=>Math.round(n*100)/100;
 
 const $=id=>document.getElementById(id);
 const money=n=>Number(n).toFixed(2).replace(/\.00$/,"")+" DH";
@@ -296,6 +298,19 @@ function cleanProductText(value){
   // Avoid displaying serialized API objects or code fragments as customer-facing copy.
   if(/^\s*[\[{]/.test(s) || /<\/?[a-z][^>]*>/i.test(s)) return "";
   return s;
+}
+
+function normalizeProducts(list){
+  return list.map(p => ({
+    ...p,
+    name: p.name || "Produit",
+    price: Number(p.suggested_retail_price || p.minimum_selling_price || 0),
+    min: Number(p.minimum_selling_price || 0),
+    stock: Number(p.stock_quantity || 0),
+    active: p.is_active !== false,
+    supplier: String(p.supplier_group_id || ""),
+    image: imgUrl(p.main_image || (p.images || [])[0])
+  }));
 }
 
 async function load(){
@@ -349,6 +364,14 @@ async function load(){
 
       allProducts.push(...pageProducts);
 
+      // Afficher dès la première page, sans attendre tout le catalogue.
+      if (pages === 0) {
+        products = normalizeProducts(allProducts);
+        draw();
+        status.style.display = "block";
+        status.textContent = tr("loadingMore");
+      }
+
       const pagination = data.pagination || data.data?.pagination || {};
       hasMore = pagination.has_more === true;
       cursor = pagination.next_cursor || null;
@@ -362,21 +385,7 @@ async function load(){
       }
     }
 
-    products = allProducts.map(p => ({
-      ...p,
-      sku: p.sku,
-      name: p.name || "Produit",
-      price: Number(
-        p.suggested_retail_price ||
-        p.minimum_selling_price || 0
-      ),
-      min: Number(p.minimum_selling_price || 0),
-      stock: Number(p.stock_quantity || 0),
-      active: p.is_active !== false,
-      supplier: String(p.supplier_group_id || ""),
-      image: imgUrl(p.main_image || (p.images || [])[0])
-    }));
-
+    products = normalizeProducts(allProducts);
     refreshCategories();
     draw();
 
@@ -572,7 +581,19 @@ window.addEventListener("popstate",()=>{
     document.title=tr("seoTitle");
   }
 });
+function invalidatePending(){
+  if(sending) return;
+  if(!pending && !orderDone) return;
+  pending=null;
+  orderDone=false;
+  $("ok").style.display="none";
+  const b=$("send");
+  b.disabled=false;
+  b.textContent=tr("send");
+}
+
 function add(p){
+invalidatePending();
 let x=cart.get(p.sku);
 
 if(x)x.qty++;
@@ -621,6 +642,7 @@ $("subtotal").textContent=tr("subtotal")+" : "+money(total);
 }
 
 function qty(s,d){
+invalidatePending();
 let p=cart.get(s);
 p.qty+=d;
 
@@ -629,14 +651,23 @@ if(p.qty<1)cart.delete(s);
 update();
 }
 
+function closeCart(){
+$("overlay").classList.remove("open");
+$("open").focus();
+}
+
 $("open").onclick=()=>{
 $("overlay").classList.add("open");
 update();
+$("close").focus();
 };
 
-$("close").onclick=()=>{
-$("overlay").classList.remove("open");
-};
+$("close").onclick=closeCart;
+$("overlay").addEventListener("click",e=>{if(e.target===$("overlay"))closeCart();});
+document.addEventListener("keydown",e=>{
+if(e.key==="Escape"&&$("overlay").classList.contains("open"))closeCart();
+});
+$("form").addEventListener("input",invalidatePending);
 
 $("search").oninput=draw;
 
@@ -648,7 +679,8 @@ headers:{"Content-Type":"application/json"},
 body:JSON.stringify(data)
 });
 
-let d=await r.json();
+let d;
+try{d=await r.json();}catch{d={};}
 
 if(!r.ok||d.success===false)
 throw Error(d.error||d.message||"Erreur API");
@@ -670,26 +702,41 @@ $("err").style.display="none";
 $("form").onsubmit=async e=>{
 e.preventDefault();
 
+if(sending||orderDone) return;
+
 let btn=$("send");
 
 if(pending){
 
+let token=turnstileToken();
+
+if(TURNSTILE_SITE_KEY && !token){
+err(tr("captcha"));
+return;
+}
+
+sending=true;
 btn.disabled=true;
 btn.textContent=tr("sending");
 
 try{
 
-let d=await post("/api/orders",pending);
+let payload={...pending};
+if(token) payload.turnstile_token=token;
+
+let d=await post("/api/orders",payload);
 let x=d.results?.[0];
 
 if(d.success!==true || !x || !["created","duplicate"].includes(x.status)){
-throw Error(x?.error||x?.status||"Réponse fournisseur غير مؤكدة");
+throw Error(x?.error||x?.status||tr("unconfirmed"));
 }
 
 ok(tr("sent")+(x.order_id||"—"));
 
 cart.clear();
 pending=null;
+orderDone=true;
+e.target.reset();
 update();
 
 btn.textContent=tr("done");
@@ -699,6 +746,11 @@ btn.textContent=tr("done");
 err(tr("orderError")+ex.message);
 btn.disabled=false;
 btn.textContent=tr("retry");
+
+}finally{
+
+sending=false;
+resetTurnstile();
 
 }
 
@@ -739,10 +791,11 @@ err(tr("phoneError"));
 return;
 }
 
-let fee=/casablanca|الدار البيضاء/i.test(customer.city)?20:30;
+let fee=shippingFee(customer.city);
 
-let sub=items.reduce((s,p)=>s+p.price*p.qty,0);
+let sub=round2(items.reduce((s,p)=>s+p.price*p.qty,0));
 
+sending=true;
 btn.disabled=true;
 btn.textContent=tr("quote");
 
@@ -751,7 +804,7 @@ try{
 let q=await post("/api/quote",{
 city:customer.city,
 customer_shipping_fee:fee,
-cod_to_collect:sub+fee,
+cod_to_collect:round2(sub+fee),
 items:items.map(p=>({
 sku:p.sku,
 quantity:p.qty,
@@ -760,7 +813,7 @@ retail_price:p.price
 });
 
 if(q.success!==true || q.is_valid!==true){
-throw Error(q.error||q.message||"عرض السعر غير صالح عند المورد");
+throw Error(q.error||q.message||tr("quoteInvalid"));
 }
 
 pending={
@@ -776,33 +829,71 @@ supplier_group_id:p.supplier
 };
 
 ok(
-tr("quoteOk")+money(sub+fee)+". "+tr("notSent")
+tr("quoteOk")+money(round2(sub+fee))+". "+tr("notSent")
 );
 
-btn.textContent=currentLang==="ar"?"تأكيد وإرسال الطلب للمورد":"Confirmer et envoyer au fournisseur";
+btn.textContent=tr("confirm");
 btn.disabled=false;
 
 }catch(ex){
 
 pending=null;
 err(tr("quoteFail")+ex.message);
-btn.textContent=tr("verify");
+btn.textContent=tr("send");
 btn.disabled=false;
+
+}finally{
+
+sending=false;
 
 }
 
 };
+
+function initTurnstile(){
+  if(!TURNSTILE_SITE_KEY) return;
+  const sc=document.createElement("script");
+  sc.src="https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit";
+  sc.async=true;
+  sc.onload=()=>{turnstileWidget=window.turnstile.render("#turnstile",{sitekey:TURNSTILE_SITE_KEY});};
+  document.head.append(sc);
+}
+function turnstileToken(){
+  return (TURNSTILE_SITE_KEY && turnstileWidget!==null && window.turnstile)
+    ? window.turnstile.getResponse(turnstileWidget) : "";
+}
+function resetTurnstile(){
+  if(TURNSTILE_SITE_KEY && turnstileWidget!==null && window.turnstile) window.turnstile.reset(turnstileWidget);
+}
+
+async function loadCities(){
+  try{
+    const r=await fetch(API+"/api/cities");
+    if(!r.ok) return;
+    const d=await r.json();
+    const list=Array.isArray(d)?d:Array.isArray(d.data)?d.data
+      :Array.isArray(d.data?.cities)?d.data.cities:Array.isArray(d.cities)?d.cities:[];
+    const names=[...new Set(list
+      .map(c=>typeof c==="string"?c:(c.name_fr||c.name||c.name_ar||c.city||""))
+      .map(n=>String(n).trim()).filter(Boolean))];
+    $("cityList").replaceChildren(...names.map(n=>{const o=document.createElement("option");o.value=n;return o;}));
+  }catch{}
+}
+
 let currentLang = localStorage.getItem("souqnova_lang") || "fr";
 const translations = {
   fr: {
-    seoTitle:"SouqNova | Boutique en ligne au Maroc", details:"Voir détails", description:"Description du produit", readMore:"Lire la suite...", readLess:"Lire moins", usage:"Mode d’utilisation", descriptionUnavailable:"La description détaillée en arabe n’est pas encore disponible pour ce produit.", usageUnavailable:"Veuillez suivre les instructions du fabricant indiquées sur l’emballage. Aucune autre consigne d’utilisation n’a été fournie par le fournisseur.", back:"Retour aux produits", available:"Disponible", unavailable:"Indisponible", loading:"Chargement des produits...", loaded:" produits chargés", loadError:"Impossible de charger les produits : ",
+    seoTitle:"SouqNova | Boutique en ligne au Maroc", details:"Voir détails", description:"Description du produit", readMore:"Lire la suite...", readLess:"Lire moins", usage:"Mode d’utilisation", descriptionUnavailable:"La description détaillée en arabe n’est pas encore disponible pour ce produit.", usageUnavailable:"Veuillez suivre les instructions du fabricant indiquées sur l’emballage. Aucune autre consigne d’utilisation n’est disponible.", back:"Retour aux produits", available:"Disponible", unavailable:"Indisponible", loading:"Chargement des produits...", loadingMore:"Chargement des autres produits...", loaded:" produits chargés", loadError:"Impossible de charger les produits : ",
     noProducts:"Aucun produit disponible pour le moment.", ref:"Réf. : ", add:"Ajouter au panier",
     subtotal:"Sous-total", sending:"Envoi...", sent:"Commande envoyée. Référence : ", done:"Commande envoyée",
     orderError:"Erreur lors de l'envoi : ", retry:"Réessayer", emptyCart:"Votre panier est vide.",
-    multi:"Veuillez choisir des produits d'un seul fournisseur.", min:"Un prix est inférieur au minimum autorisé.",
+    multi:"Ces produits ne peuvent pas être commandés ensemble. Passez des commandes séparées.", min:"Un prix est inférieur au minimum autorisé.",
     phoneError:"Entrez un numéro marocain valide (05, 06 ou 07 + 8 chiffres).",
     quote:"Vérification du prix...", quoteOk:"Total à payer à la livraison : ", notSent:"Votre commande n'est pas encore envoyée.",
-    quoteFail:"Vérification impossible : ", verify:"Vérifier le prix",
+    quoteFail:"Vérification impossible : ", verify:"Vérifier le prix", confirm:"Confirmer la commande",
+    unconfirmed:"Réponse non confirmée", quoteInvalid:"Prix non valide", captcha:"Vérification anti-spam en cours, réessayez dans un instant.",
+    shipNote:"Livraison : 20 DH à Casablanca, 30 DH dans les autres villes, une seule fois par commande.",
+    stepNote:"Le premier clic vérifie seulement le prix. Le second clic envoie la commande.",
     top:"Livraison partout au Maroc · Paiement à la livraison",
     hero:"", heroText:"Une sélection de produits avec paiement à la livraison partout au Maroc.",
     search:"Rechercher un produit...", allCategories:"Toutes les catégories", sort:"Tri par défaut", asc:"Prix croissant", desc:"Prix décroissant",
@@ -811,14 +902,17 @@ const translations = {
     langButton:"العربية", send:"Vérifier le prix"
   },
   ar: {
-    seoTitle:"SouqNova | متجر إلكتروني بالمغرب", details:"تفاصيل المنتج", description:"وصف المنتج", readMore:"اقرأ المزيد...", readLess:"اقرأ أقل", usage:"طريقة الاستعمال", descriptionUnavailable:"الوصف العربي المفصل غير متوفر لهذا المنتج حالياً. سنضيفه بعد التحقق من معلومات المورد.", usageUnavailable:"يرجى اتباع تعليمات الشركة المصنعة الموجودة على العبوة. لم يقدم المورد تعليمات استعمال إضافية مؤكدة.", back:"العودة إلى المنتجات", available:"متوفر", unavailable:"غير متوفر", loading:"جارٍ تحميل المنتجات...", loaded:" منتج تم تحميله", loadError:"تعذر تحميل المنتجات: ",
+    seoTitle:"SouqNova | متجر إلكتروني بالمغرب", details:"تفاصيل المنتج", description:"وصف المنتج", readMore:"اقرأ المزيد...", readLess:"اقرأ أقل", usage:"طريقة الاستعمال", descriptionUnavailable:"الوصف العربي المفصل غير متوفر لهذا المنتج حالياً.", usageUnavailable:"يرجى اتباع تعليمات الشركة المصنعة الموجودة على العبوة. لا تتوفر تعليمات استعمال إضافية.", back:"العودة إلى المنتجات", available:"متوفر", unavailable:"غير متوفر", loading:"جارٍ تحميل المنتجات...", loadingMore:"جارٍ تحميل باقي المنتجات...", loaded:" منتج تم تحميله", loadError:"تعذر تحميل المنتجات: ",
     noProducts:"لا توجد منتجات متاحة حالياً.", ref:"المرجع: ", add:"أضف إلى السلة",
     subtotal:"المجموع الفرعي", sending:"جارٍ الإرسال...", sent:"تم إرسال الطلب. رقم الطلب: ", done:"تم إرسال الطلب",
     orderError:"وقع خطأ أثناء إرسال الطلب: ", retry:"أعد المحاولة", emptyCart:"السلة فارغة.",
-    multi:"يرجى اختيار منتجات من مورد واحد فقط.", min:"يوجد منتج سعره أقل من الحد الأدنى المسموح.",
+    multi:"لا يمكن طلب هذه المنتجات معاً. يرجى إرسال طلبات منفصلة.", min:"يوجد منتج سعره أقل من الحد الأدنى المسموح.",
     phoneError:"أدخل رقم هاتف مغربي صحيحاً (05 أو 06 أو 07 ثم 8 أرقام).",
     quote:"جارٍ التحقق من السعر...", quoteOk:"المبلغ الإجمالي عند التسليم: ", notSent:"لم يتم إرسال طلبك بعد.",
-    quoteFail:"تعذر التحقق من السعر: ", verify:"تحقق من السعر",
+    quoteFail:"تعذر التحقق من السعر: ", verify:"تحقق من السعر", confirm:"تأكيد الطلب",
+    unconfirmed:"لم يتم تأكيد الرد", quoteInvalid:"السعر غير صالح", captcha:"جارٍ التحقق الأمني، أعد المحاولة بعد لحظة.",
+    shipNote:"الشحن: 20 درهم للدار البيضاء و30 درهم لباقي المدن، مرة واحدة لكل طلب.",
+    stepNote:"الضغطة الأولى تتحقق من السعر فقط. الضغطة الثانية ترسل الطلب.",
     top:"التوصيل لجميع أنحاء المغرب · الدفع عند الاستلام",
     hero:"اكتشف منتجات تستحق أن تكون من اختياراتك المفضلة.", heroText:"تشكيلة من المنتجات مع الدفع عند الاستلام في جميع أنحاء المغرب.",
     search:"ابحث عن منتج...", allCategories:"جميع الفئات", sort:"الترتيب الافتراضي", asc:"السعر من الأقل إلى الأعلى", desc:"السعر من الأعلى إلى الأقل",
@@ -845,13 +939,19 @@ function setLanguage(lang){
   $("addressLabel").textContent = tr("address");
   $("notesLabel").textContent = tr("notes");
   $("footerText").textContent = tr("footer");
+  $("shipNote").textContent = tr("shipNote");
+  $("stepNote").textContent = tr("stepNote");
   $("langToggle").textContent = tr("langButton");
-  if (!$("send").disabled && !pending) $("send").textContent = tr("send");
+  const sb = $("send");
+  if (orderDone) sb.textContent = tr("done");
+  else if (!sb.disabled) sb.textContent = pending ? tr("confirm") : tr("send");
   draw();
 }
 $("langToggle").addEventListener("click", () => setLanguage(currentLang === "fr" ? "ar" : "fr"));
 
 setLanguage(currentLang);
+initTurnstile();
+loadCities();
 load();
 </script>
 
