@@ -111,6 +111,7 @@ header{position:sticky;top:0;z-index:20;background:var(--brand);color:#fff;displ
 .trust b{display:block;font-size:14px;line-height:1.25}
 .trust small{display:block;font-size:12px;color:var(--muted);line-height:1.3}
 @media(min-width:960px){.trust ul{justify-content:space-between}}
+@media(max-width:639px){.trust ul{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;overflow:visible;padding:10px 12px}.trust li{flex-direction:column;text-align:center;gap:4px}.trust svg{width:22px;height:22px}.trust b{font-size:12px}.trust small{display:none}}
 
 /* Catalogue */
 main{max-width:1200px;margin:0 auto;padding:20px 16px 48px}
@@ -135,9 +136,10 @@ main{max-width:1200px;margin:0 auto;padding:20px 16px 48px}
 .product-actions{display:grid;gap:8px;margin-top:auto;padding-top:10px}
 .add,.submit{background:var(--brand);color:#fff;width:100%;min-height:44px}
 .add:hover:not(:disabled),.submit:hover:not(:disabled){background:var(--brand-hi)}
+.submit{position:sticky;bottom:12px;z-index:1;box-shadow:0 6px 18px #0a342740}
 .product-actions .add{order:-1}
-.details-btn{background:transparent;color:var(--brand);border:1px solid var(--line);min-height:40px;padding:8px 12px;font-size:14px}
-.details-btn:hover{background:var(--brand-soft);border-color:#b4c8bd}
+.details-btn{background:transparent;color:var(--brand);border:0;min-height:36px;padding:6px 8px;font-size:14px;text-decoration:underline;text-underline-offset:3px}
+.details-btn:hover{background:var(--brand-soft)}
 .sk-line{height:12px;border-radius:6px;background:#e7ede9;margin-top:10px}
 .sk-line.short{width:55%}
 .skel .photo,.skel .sk-line{background:linear-gradient(90deg,#e7ede9 25%,#f2f6f3 40%,#e7ede9 60%) 0 0/300% 100%;animation:shimmer 1.4s linear infinite}
@@ -553,6 +555,7 @@ inf.className="info";
 
 let n=document.createElement("div");
 n.className="name";
+n.dir="auto";
 n.textContent=p.name;
 
 let ref=document.createElement("div");
@@ -619,6 +622,7 @@ function openProduct(p,fromUrl){
   $("toolbar").hidden=true;
   $("status").hidden=true;
   $("productDetail").hidden=false;
+  $("detailName").dir="auto";
   $("detailName").textContent=p.name;
   $("detailPrice").textContent=money(p.price);
   $("detailKicker").textContent=tr("details");
@@ -731,6 +735,7 @@ row.className="line";
 let info=document.createElement("div");
 let nm=document.createElement("div");
 nm.className="line-name";
+nm.dir="auto";
 nm.textContent=p.name;
 let unit=document.createElement("div");
 unit.className="muted";
